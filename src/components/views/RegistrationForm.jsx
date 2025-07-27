@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ChevronDown, User, Check } from "lucide-react";
+import { ChevronDown, User, Check, AlertCircle, CheckCircle } from "lucide-react";
 import headerBg from "../assets/images/register-header.png";
 import loginImg from "../assets/images/login.png";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,91 @@ import { useProgressBarContext } from "../context/ProgressBarContext";
 import Steps from "./Steps/Steps";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-
+const validators = {
+  required: (value) => {
+    if (!value || (typeof value === 'string' && !value.trim())) {
+      return 'This field is required';
+    }
+    return null;
+  },
+  
+  email: (value) => {
+    if (!value) return null;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+      return 'Please enter a valid email address';
+    }
+    return null;
+  },
+  
+  emailMatch: (email, confirmEmail) => {
+    if (!confirmEmail) return null;
+    if (email !== confirmEmail) {
+      return 'Email addresses do not match';
+    }
+    return null;
+  },
+  
+  name: (value) => {
+    if (!value) return null;
+    if (value.length < 2) {
+      return 'Name must be at least 2 characters long';
+    }
+    if (!/^[a-zA-Z\s'-]+$/.test(value)) {
+      return 'Name can only contain letters, spaces, hyphens, and apostrophes';
+    }
+    return null;
+  },
+  
+  phone: (value) => {
+    if (!value) return null;
+    const phoneRegex = /^\+?[\d\s\-\(\)]+$/;
+    if (!phoneRegex.test(value) || value.replace(/\D/g, '').length < 10) {
+      return 'Please enter a valid phone number';
+    }
+    return null;
+  },
+  
+  companyName: (value) => {
+    if (!value) return null;
+    if (value.length < 2) {
+      return 'Company name must be at least 2 characters long';
+    }
+    return null;
+  },
+  
+  jobTitle: (value) => {
+    if (!value) return null;
+    if (value.length < 2) {
+      return 'Job title must be at least 2 characters long';
+    }
+    return null;
+  },
+  
+  workshopSelection: (workshops) => {
+    const selectedCount = Object.values(workshops).filter(Boolean).length;
+    if (selectedCount === 0) {
+      return 'Please select at least one workshop';
+    }
+    if (selectedCount > 6) {
+      return 'Maximum 6 workshops can be selected';
+    }
+    return null;
+  }
+};
+const validationRules = {
+  firstName: [validators.required, validators.name],
+  lastName: [validators.required, validators.name],
+  country: [validators.required],
+  email: [validators.required, validators.email],
+  confirmEmail: [(value, formData) => validators.emailMatch(formData.email, value)],
+  mobileNumber: [validators.required, validators.phone],
+  companyName: [validators.required, validators.companyName],
+  jobTitle: [validators.required, validators.jobTitle],
+  companyType: [validators.required],
+  industry: [validators.required],
+  workshops: [validators.workshopSelection]
+};
 export default function RegistrationForm() {
   const navigate = useNavigate();
   const [selectedWorkshops, setSelectedWorkshops] = useState([]);
@@ -43,13 +127,16 @@ export default function RegistrationForm() {
       "Future Mobility (1 Day)": false,
     },
   });
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { currentStep, setCurrentStep, steps } = useProgressBarContext();
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  // const handleInputChange = (field, value) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [field]: value,
+  //   }));
+  // };
   const topics = [
     "Artificial Intelligence & Robotics",
     "Cybersecurity",
@@ -57,20 +144,202 @@ export default function RegistrationForm() {
     "Digital Finance",
   ];
 
-  const handleWorkshopChange = (workshop) => {
+  // const handleWorkshopChange = (workshop) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     workshops: {
+  //       ...prev.workshops,
+  //       [workshop]: !prev.workshops[workshop],
+  //     },
+  //   }));
+  // };
+  const validateField = (fieldName, value, formData = null) => {
+    const rules = validationRules[fieldName];
+    if (!rules) return null;
+
+    for (const rule of rules) {
+      const error = rule(value, formData || formData);
+      if (error) return error;
+    }
+    return null;
+  };
+  // const currentStep = 1;
+  const validateForm = () => {
+    const newErrors = {};
+    
+    Object.keys(validationRules).forEach(fieldName => {
+      const error = validateField(fieldName, formData[fieldName], formData);
+      if (error) {
+        newErrors[fieldName] = error;
+      }
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
-      workshops: {
-        ...prev.workshops,
-        [workshop]: !prev.workshops[workshop],
-      },
+      [field]: value,
+    }));
+
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: null
+      }));
+    }
+
+    // Validate field in real-time if it was touched
+    if (touched[field]) {
+      const error = validateField(field, value, { ...formData, [field]: value });
+      setErrors(prev => ({
+        ...prev,
+        [field]: error
+      }));
+    }
+  };
+  const handleFieldBlur = (fieldName) => {
+    setTouched(prev => ({
+      ...prev,
+      [fieldName]: true
+    }));
+
+    const error = validateField(fieldName, formData[fieldName], formData);
+    setErrors(prev => ({
+      ...prev,
+      [fieldName]: error
     }));
   };
+  const handleWorkshopChange = (workshop) => {
+    const newWorkshops = {
+      ...formData.workshops,
+      [workshop]: !formData.workshops[workshop],
+    };
 
-  // const currentStep = 1;
+    setFormData((prev) => ({
+      ...prev,
+      workshops: newWorkshops,
+    }));
 
+    // Validate workshop selection
+    if (touched.workshops) {
+      const error = validateField('workshops', newWorkshops);
+      setErrors(prev => ({
+        ...prev,
+        workshops: error
+      }));
+    }
+  };
+  const handleNext = async () => {
+    setIsSubmitting(true);
+    
+    try {
+      // Mark all fields as touched to show validation errors
+      const allTouched = {};
+      Object.keys(validationRules).forEach(field => {
+        allTouched[field] = true;
+      });
+      setTouched(allTouched);
+
+      const isValid = validateForm();
+      
+      if (!isValid) {
+        // Scroll to first error
+        const firstErrorField = Object.keys(errors)[0];
+        if (firstErrorField) {
+          const element = document.querySelector(`[data-field="${firstErrorField}"]`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.focus();
+          }
+        }
+        return;
+      }
+
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Navigate to next step
+      if (currentStep < 4) {
+        setCurrentStep(currentStep + 1);
+      }
+      
+    } catch (error) {
+      console.error('Submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  const getFieldState = (fieldName) => {
+    const hasError = errors[fieldName];
+    const isValid = touched[fieldName] && !hasError && formData[fieldName];
+    
+    return {
+      hasError,
+      isValid,
+      className: `w-full p-2 md:p-3 border rounded focus:ring-2 focus:border-transparent text-sm md:text-base transition-colors ${
+        hasError 
+          ? 'border-red-500 focus:ring-red-500 bg-red-50' 
+          : isValid 
+            ? 'border-green-500 focus:ring-green-500 bg-green-50'
+            : 'border-gray-300 focus:ring-green-500'
+      }`
+    };
+  };
+  // Error tooltip component
+  const ErrorTooltip = ({ error, show }) => {
+    if (!error || !show) return null;
+    return (
+      <div className="absolute top-full left-0 right-0 z-10 mt-1 transform">
+        <div className="bg-red-600 text-white px-3 py-2 rounded-lg shadow-lg text-xs relative">
+          <div className="absolute -top-1 left-4 w-2 h-2 bg-red-600 transform rotate-45"></div>
+          <div className="flex items-center">
+            <AlertCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+            <span>{error}</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Error icon component for input fields
+  const ErrorIcon = ({ error, show }) => {
+    if (!error || !show) return null;
+    return (
+      <div className="absolute right-8 md:right-9 top-2 md:top-3">
+        <AlertCircle className="w-4 h-4 md:w-5 md:w-5 text-red-500" />
+      </div>
+    );
+  };
+
+  // Success indicator component
+  const SuccessIndicator = ({ show }) => {
+    if (!show) return null;
+    return (
+      <div className="absolute right-2 md:right-3 top-2 md:top-3">
+        <CheckCircle className="w-4 h-4 md:w-5 md:w-5 text-green-500" />
+      </div>
+    );
+  };
+
+  // Form progress indicator
+  const getFormProgress = () => {
+    const requiredFields = ['firstName', 'lastName', 'country', 'email', 'mobileNumber', 'companyName', 'jobTitle', 'companyType', 'industry'];
+    const filledFields = requiredFields.filter(field => formData[field] && !errors[field]);
+    const workshopsValid = !validateField('workshops', formData.workshops);
+    
+    const totalRequired = requiredFields.length + 1; // +1 for workshops
+    const totalFilled = filledFields.length + (workshopsValid ? 1 : 0);
+    
+    return Math.round((totalFilled / totalRequired) * 100);
+  };
+
+  const formProgress = getFormProgress();
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-green-100 to-green-50 relative">
+      {console.log(errors,'errorserrors')}
       <div
         className="bg-gradient-to-r from-lime-400 to-green-500 p-14 flex justify-between items-center flex-shrink-0 bg-cover bg-center bg-no-repeat relative"
         style={{
@@ -131,22 +400,29 @@ export default function RegistrationForm() {
               </div> */}
 
                   {/* Form Fields */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 md:gap-6 mb-6 md:mb-8">
                     {/* Left Column */}
                     <div className="space-y-4 md:space-y-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          First name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.firstName}
-                          onChange={(e) =>
-                            handleInputChange("firstName", e.target.value)
-                          }
-                          className="w-full p-2 md:p-3 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base"
-                        />
-                      </div>
+                    <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      First name <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        data-field="firstName"
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange("firstName", e.target.value)}
+                        onBlur={() => handleFieldBlur("firstName")}
+                        className={getFieldState("firstName").className}
+                        placeholder="Enter your first name"
+                      />
+                      <SuccessIndicator show={getFieldState("firstName").isValid} />
+                      <ErrorIcon error={errors.firstName} show={touched.firstName} />
+                      <ErrorTooltip error={errors.firstName} show={touched.firstName} />
+                    </div>
+                  </div>
+
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -305,6 +581,13 @@ export default function RegistrationForm() {
                           country={"us"}
                           inputStyle={{ width: "100%", height: "inherit" }}
                           buttonStyle={{ backgroundColor: "#e0e0e0" }}
+                          value={formData.mobileNumber} // Make sure this matches your form state
+                          onChange={(phone) => handleInputChange("mobileNumber", phone)} // Adjusting to call handleInputChange correctly
+                          inputProps={{
+                            name: "mobileNumber",
+                            required: true,
+                            autoFocus: true,
+                          }}
                           className="phone-input"
                         />
 
@@ -511,13 +794,15 @@ export default function RegistrationForm() {
             </button>
           )}
           <button
-            onClick={() => {
-              if (currentStep < 4) {
-                setCurrentStep(currentStep + 1);
-              } else if (currentStep === 4) {
-                navigate("/promo-code");
-              }
-            }}
+            // onClick={() => {
+            //   if (currentStep < 4) {
+            //     setCurrentStep(currentStep + 1);
+            //   } else if (currentStep === 4) {
+            //     navigate("/promo-code");
+            //   }
+            // }}
+            onClick={handleNext}
+            disabled={isSubmitting}
             className="bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 rounded font-bold hover:bg-green-700 transition-colors text-sm md:text-base"
           >
             NEXT
