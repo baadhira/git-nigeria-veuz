@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import gitexLogo from "../assets/images/gitexnigeria.png";
 import formBackground from "../assets/images/form-background.png";
 import WorkshopSelector from "./WorkshopSelector";
-import {useProgressBarContext} from '../context/ProgressBarContext'
+import { useProgressBarContext } from "../context/ProgressBarContext";
 import Steps from "./Steps/Steps";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export default function RegistrationForm() {
   const navigate = useNavigate();
@@ -41,9 +43,7 @@ export default function RegistrationForm() {
       "Future Mobility (1 Day)": false,
     },
   });
-  const {
-    currentStep, setCurrentStep,steps
-  } = useProgressBarContext();
+  const { currentStep, setCurrentStep, steps } = useProgressBarContext();
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -68,7 +68,6 @@ export default function RegistrationForm() {
   };
 
   // const currentStep = 1;
- 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-green-100 to-green-50 relative">
@@ -91,7 +90,7 @@ export default function RegistrationForm() {
       >
         {/* Header with steps */}
 
-        <Steps/>
+        <Steps />
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto border border-green/100 rounded-lg shadow-lg">
@@ -301,7 +300,15 @@ export default function RegistrationForm() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Mobile number <span className="text-red-500">*</span>
                         </label>
-                        <div className="flex">
+        
+                        <PhoneInput
+                          country={"us"}
+                          inputStyle={{ width: "100%", height: "inherit" }}
+                          buttonStyle={{ backgroundColor: "#e0e0e0" }}
+                          className="phone-input"
+                        />
+
+                        {/* <div className="flex">
                           <div className="relative">
                             <select className="w-16 md:w-20 p-2 md:p-3 border border-r-0 border-gray-300 rounded-l focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white appearance-none text-sm md:text-base">
                               <option value="+234">🇳🇬</option>
@@ -321,7 +328,7 @@ export default function RegistrationForm() {
                             }
                             className="flex-1 p-2 md:p-3 border border-gray-300 rounded-r focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base"
                           />
-                        </div>
+                        </div> */}
                       </div>
 
                       <div>
@@ -410,7 +417,7 @@ export default function RegistrationForm() {
                               type="checkbox"
                               checked={formData.workshops[workshop]}
                               onChange={() => handleWorkshopChange(workshop)}
-                              className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 mt-0.5 flex-shrink-0 accent-green-700" 
+                              className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 mt-0.5 flex-shrink-0 accent-green-700"
                             />
                             <span className="text-gray-700 leading-tight">
                               {workshop}
@@ -507,8 +514,8 @@ export default function RegistrationForm() {
             onClick={() => {
               if (currentStep < 4) {
                 setCurrentStep(currentStep + 1);
-              }else if(currentStep===4){
-                navigate('/promo-code')
+              } else if (currentStep === 4) {
+                navigate("/promo-code");
               }
             }}
             className="bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 rounded font-bold hover:bg-green-700 transition-colors text-sm md:text-base"

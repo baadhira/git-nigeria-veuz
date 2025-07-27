@@ -15,7 +15,7 @@ function App() {
     <FormProvider>
     <Router>
       <Routes>
-        <Route path="/" element={<Badgewithfontsizelarge/>} />
+        <Route path="/" element={<GitexTicketSelection/>} />
         {/* GitexTicketSelection */}
         <Route path="/register-form" element={<RegistrationForm />} />
         <Route path="/promo-code" element={<ApplyingPromoCode />} />
