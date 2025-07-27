@@ -25,7 +25,32 @@ const TicketCard = ({
     red: "bg-gradient-to-br from-red-600 to-red-800",
     teal: "bg-gradient-to-br from-teal-600 to-teal-800",
   };
+// const renderBadge = () => {
+//   if (badgeType === "exclusive" || badgeType === "bestseller") {
+//     const isExclusive = badgeType === "exclusive";
+//     const text = isExclusive ? "EXCLUSIVE" : "BEST SELLER";
+//     const gradient = isExclusive
+//       ? "linear-gradient(138.24deg, #16F25C 5.66%, #04270F 49.06%)"
+//       : "linear-gradient(138.24deg, #F2165C 5.66%, #270404 49.06%)";
 
+//     return (
+//       <div className="absolute top-0 left-0 w-[125px] h-[140px] overflow-hidden pointer-events-none z-[6000]">
+//         <div
+//           className="absolute w-[200px] text-center text-white text-xs font-bold transform -rotate-45 origin-top-left z-[60]"
+//           style={{
+//             background: gradient,
+//             top: "30px",
+//             left: "-60px",
+//             padding: "6px 0",
+//           }}
+//         >
+//           {text}
+//         </div>
+//       </div>
+//     );
+//   }
+//   return null;
+// };
   const renderBadge = () => {
     if (badgeType === "exclusive") {
       return (
