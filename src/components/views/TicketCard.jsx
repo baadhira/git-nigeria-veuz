@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import headerBg from "../assets/images/header.png";
+import sidebarBg from "../assets/images/sidebar-top.png";
+import sidebarInside from "../assets/images/sidebar-inside.png";
+
+
 import { useNavigate } from "react-router-dom";
 const TicketCard = ({
   title,
@@ -484,7 +488,7 @@ const GitexTicketSelection = () => {
               <div className="text-xs opacity-70">View Ticket Summary</div>
             </div>
 
-            <button  onClick={() => navigate("/summary")} className="bg-white text-green-800 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center gap-2">
+            <button  onClick={() => navigate("/register-form")} className="bg-white text-green-800 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center gap-2">
               Buy Now
               {getTotalQuantity() > 0 && (
                 <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">

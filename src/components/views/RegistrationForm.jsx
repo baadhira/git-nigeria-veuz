@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import gitexLogo from "../assets/images/gitexnigeria.png";
 import formBackground from "../assets/images/form-background.png";
 import WorkshopSelector from "./WorkshopSelector";
+import {useProgressBarContext} from '../context/ProgressBarContext'
+import Steps from "./Steps/Steps";
+
 export default function RegistrationForm() {
   const navigate = useNavigate();
-  // const [currentStep, setCurrentStep] = useState(1);
   const [selectedWorkshops, setSelectedWorkshops] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -39,7 +41,9 @@ export default function RegistrationForm() {
       "Future Mobility (1 Day)": false,
     },
   });
-
+  const {
+    currentStep, setCurrentStep,steps
+  } = useProgressBarContext();
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -63,13 +67,8 @@ export default function RegistrationForm() {
     }));
   };
 
-  const currentStep = 1; // for example, step 2 is in progress
-  const steps = [
-    { number: 1, label: "Step 1" },
-    { number: 2, label: "Step 2" },
-    { number: 3, label: "Step 3" },
-    { number: 4, label: "Step 4" },
-  ];
+  // const currentStep = 1;
+ 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-green-100 to-green-50 relative">
@@ -92,50 +91,10 @@ export default function RegistrationForm() {
       >
         {/* Header with steps */}
 
-        <div className="p-4 md:p-8 mb-0">
-          <div className="flex items-center justify-center">
-            {steps.map((step, index) => {
-              const isCompleted = step.number < currentStep;
-              const isCurrent = step.number === currentStep;
-
-              return (
-                <div key={step.number} className="flex items-center">
-                  <div
-                    className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-bold border-2 transition-all duration-300 ${
-                      isCompleted
-                        ? "bg-green-600 text-white border-green-600"
-                        : isCurrent
-                        ? "bg-green-600 text-white border-green-600"
-                        : "bg-white text-gray-500 border-gray-300"
-                    }`}
-                  >
-                    {isCompleted ? (
-                      <Check size={16} className="w-4 h-4" />
-                    ) : (
-                      step.number
-                    )}
-                  </div>
-
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`h-1 mx-2 md:mx-4 rounded-full transition-all duration-300
-                ${
-                  isCompleted
-                    ? "w-16 md:w-32 bg-green-600"
-                    : isCurrent
-                    ? "w-16 md:w-32 bg-gradient-to-r from-green-600 to-gray-300"
-                    : "w-16 md:w-32 bg-gray-300"
-                }`}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <Steps/>
 
         {/* Main Content */}
-        <div className="max-w-6xl mx-auto border border-green/100 rounded-lg shadow-lg">
+        <div className="max-w-7xl mx-auto border border-green/100 rounded-lg shadow-lg">
           <div className="bg-white overflow-hidden py-2 w-full">
             {/* rounded-lg shadow-lg */}
             <div className="flex flex-col lg:flex-row gap-6 px-4 md:px-6 lg:px-8">
@@ -451,7 +410,7 @@ export default function RegistrationForm() {
                               type="checkbox"
                               checked={formData.workshops[workshop]}
                               onChange={() => handleWorkshopChange(workshop)}
-                              className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 mt-0.5 flex-shrink-0"
+                              className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 mt-0.5 flex-shrink-0 accent-green-700" 
                             />
                             <span className="text-gray-700 leading-tight">
                               {workshop}
@@ -467,7 +426,7 @@ export default function RegistrationForm() {
               </div>
               {/* Sidebar */}
               {/* p-4 */}
-              <div className="w-full lg:w-[30%] bg-green-600 text-white rounded-lg shadow md:p-6 relative overflow-hidden self-start max-h-[400px]">
+              <div className="w-full lg:w-[40%] bg-green-600 text-white rounded-lg shadow md:p-6 relative overflow-hidden self-start max-h-[400px] lg:mt-8">
                 {/* GITEX Header */}
                 <div className="mb-6 md:mb-8">
                   <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-start gap-2 lg:gap-3 mb-4">
@@ -528,11 +487,28 @@ export default function RegistrationForm() {
             </div>
           </div>
         </div>
-        <div className="w-full flex justify-center mt-6 mb-6">
+        <div className="w-full flex justify-center mt-6 mb-6 gap-2">
+          {currentStep > 1 && (
+            <button
+              onClick={() => {
+                if (currentStep < 4) {
+                  setCurrentStep(currentStep - 1);
+                }
+                // else{
+                //   setCurrentStep(currentStep - 1);
+                // }
+              }}
+              className="bg-[linear-gradient(90deg,_#5C2F66_0%,_#25102C_100%)] text-white px-6 md:px-8 py-2 md:py-3 rounded font-bold transition-colors text-sm md:text-base"
+            >
+              PREVIOUS
+            </button>
+          )}
           <button
             onClick={() => {
               if (currentStep < 4) {
                 setCurrentStep(currentStep + 1);
+              }else if(currentStep===4){
+                navigate('/promo-code')
               }
             }}
             className="bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 rounded font-bold hover:bg-green-700 transition-colors text-sm md:text-base"

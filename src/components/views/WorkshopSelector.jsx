@@ -137,7 +137,7 @@ const WorkshopSelector = ({ onClose ,selectedWorkshops, setSelectedWorkshops}) =
 
                         onChange={() =>handleWorkshopToggle(workshop)
 }
-                        className="w-5 h-5 text-green-500 border-2 border-gray-300 rounded focus:ring-green-500 focus:ring-2 checked:bg-green-500 checked:border-green-500 appearance-none relative"
+                        className="accent-green-700 w-5 h-5 text-green-500 border-2 border-gray-300 rounded focus:ring-green-500 focus:ring-2 checked:bg-green-500 checked:border-green-500 relative"
                       />
 
                       <label
@@ -170,7 +170,7 @@ const WorkshopSelector = ({ onClose ,selectedWorkshops, setSelectedWorkshops}) =
                         onChange={() =>handleWorkshopToggle(workshop)
 }
                         className=
-                        "w-5 h-5 text-green-500 border-2 border-gray-300 rounded focus:ring-green-500 focus:ring-2 checked:bg-green-500 checked:border-green-500 w-5 h-5 text-green-500 border-2 border-gray-300 rounded focus:ring-green-500 focus:ring-2 checked:bg-green-500 checked:border-green-500 appearance-none relative"
+                        "accent-green-700 w-5 h-5 text-green-500 border-2 border-gray-300 rounded focus:ring-green-500 focus:ring-2 checked:bg-green-500 checked:border-green-500 w-5 h-5 text-green-500 border-2 border-gray-300 rounded focus:ring-green-500 focus:ring-2 checked:bg-green-500 checked:border-green-500 relative"
                       />
                       <label
                         htmlFor={workshop.id}
@@ -200,7 +200,7 @@ const WorkshopSelector = ({ onClose ,selectedWorkshops, setSelectedWorkshops}) =
 
                         onChange={() =>handleWorkshopToggle(workshop)
 }
-                        className="w-5 h-5 appearance-none border-2 border-gray-300 rounded checked:bg-green-500 checked:border-green-500 focus:ring-green-500 focus:ring-2"
+                        className="accent-green-700 w-5 h-5 border-2 border-gray-300 rounded checked:bg-green-500 checked:border-green-500 focus:ring-green-500 focus:ring-2"
                       />
                       <label
                         htmlFor={workshop.id}

@@ -135,7 +135,7 @@ const TicketCard = ({
   );
 };
 
-const App = () => {
+const Badgewithfontsizelarge = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="flex flex-wrap gap-8 justify-center">
@@ -163,4 +163,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Badgewithfontsizelarge;
