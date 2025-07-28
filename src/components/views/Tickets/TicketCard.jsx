@@ -8,7 +8,6 @@ import cardFour from "../../assets/images/card4.jpg";
 import headerBg from "../../assets/images/header.png";
 import { useProgressBarContext } from "../../context/ProgressBarContext";
 
-// Custom hook for ticket quantity management
 const useTicketQuantity = (initialQuantity = 0) => {
   const [quantity, setQuantity] = useState(initialQuantity);
 
@@ -37,7 +36,6 @@ const useTicketQuantity = (initialQuantity = 0) => {
   };
 };
 
-// Quantity selector component
 const QuantitySelector = ({ quantity, onIncrement, onDecrement, buttonText }) => {
   if (quantity === 0) {
     return (
@@ -71,7 +69,6 @@ const QuantitySelector = ({ quantity, onIncrement, onDecrement, buttonText }) =>
   );
 };
 
-// Price display component
 const PriceDisplay = ({ 
   price, 
   originalPrice, 
@@ -171,7 +168,6 @@ const TicketCard = ({
       
       <div className={`relative rounded-xl overflow-hidden text-white ${bgColorClass[backgroundColor]} shadow-lg h-full`}>
         <div className={`p-2 border-b border-white/20 ${bgColorClass[backgroundColor]}`}>
-          {/* Decorative dots */}
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-2 right-4 w-3 h-3 bg-white opacity-60"></div>
             <div className="absolute top-6 right-8 w-2 h-2 bg-white opacity-40"></div>
@@ -309,7 +305,6 @@ const TicketCard = ({
   );
 };
 
-// Custom hook for managing all tickets
 const useTicketManager = (ticketData) => {
   const [tickets, setTickets] = useState(() => {
     const initialState = {};
@@ -478,13 +473,11 @@ const GitexTicketSelection = () => {
   const handleBuyNow = useCallback(() => {
     const selectedTickets = getTicketSummary;
     
-    // You can pass the selected tickets data to the next page
-    // For example, using state or localStorage
-    localStorage.setItem('selectedTickets', JSON.stringify({
-      tickets: selectedTickets,
-      total: calculateTotal,
-      totalQuantity: totalQuantity
-    }));
+    // localStorage.setItem('selectedTickets', JSON.stringify({
+    //   tickets: selectedTickets,
+    //   total: calculateTotal,
+    //   totalQuantity: totalQuantity
+    // }));
     
     window.scrollTo(0, 0);
     navigate("/register-form");
@@ -518,7 +511,6 @@ const GitexTicketSelection = () => {
       
       <div className="bg-[linear-gradient(90deg,_#299D3F_0%,_#123F22_100%)] relative overflow-hidden">
         <div className="relative z-10 px-4 sm:px-6 py-4 sm:py-6 text-white">
-          {/* Mobile Layout */}
           <div className="block sm:hidden">
             <div className="text-center mb-4">
               <div className="text-sm opacity-90">
@@ -565,7 +557,6 @@ const GitexTicketSelection = () => {
             </div>
           </div>
 
-          {/* Desktop Layout */}
           <div className="hidden sm:flex justify-end">
             <div className="flex items-center gap-4">
               <div>
