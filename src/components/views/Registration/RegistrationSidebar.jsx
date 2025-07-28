@@ -4,8 +4,10 @@ import sidebarTop from "../../assets/images/sidebar-top.png";
 import sidebarInside from "../../assets/images/sidebar-inside.png";
 import headerBg from "../../assets/images/register-header.png";
 import loginImg from "../../assets/images/login.png";
+import { useProgressBarContext } from "../../context/ProgressBarContext";
 
-const RegistrationSidebar = ({ formData = {} }) => {
+const RegistrationSidebar = () => {
+  const { currentStep, setCurrentStep, steps,formData, setFormData ,selectedWorkshops, setSelectedWorkshops} = useProgressBarContext();
   return (
     <div className="order-1 lg:order-2 w-full lg:w-[40%] bg-white border border-gray-200 rounded-lg shadow-lg self-start lg:mt-8 relative overflow-hidden">
       {/* Header Background Image */}
@@ -37,11 +39,19 @@ const RegistrationSidebar = ({ formData = {} }) => {
           <div className="text-lg font-medium text-gray-500 uppercase mb-1 opacity-45">
             FULL NAME
           </div>
+          <div className="text-sm text-gray-800 font-medium">
+            {formData.firstName && formData.lastName 
+              ? `${formData.firstName} ${formData.lastName}` 
+              : ''}
+          </div>
         </div>
 
         <div>
           <div className="text-s font-medium text-gray-500 uppercase mb-1 opacity-45">
             JOB TITLE
+          </div>
+          <div className="text-sm text-gray-800 font-medium">
+            {formData.jobTitle || ''}
           </div>
         </div>
 
@@ -50,12 +60,18 @@ const RegistrationSidebar = ({ formData = {} }) => {
           <div className="text-lg font-medium text-gray-500 uppercase mb-1 opacity-45">
             COMPANY NAME
           </div>
+          <div className="text-sm text-gray-800 font-medium">
+            {formData.companyName || ''}
+          </div>
         </div>
 
         {/* Country of Residence */}
         <div>
           <div className="text-lg font-medium text-gray-500 uppercase mb-1 opacity-45">
             COUNTRY OF RESIDENCE
+          </div>
+          <div className="text-sm text-gray-800 font-medium">
+            {formData.country || ''}
           </div>
         </div>
 

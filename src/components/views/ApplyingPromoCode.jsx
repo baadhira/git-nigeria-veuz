@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import headerBg from "../assets/images/register-header.png";
 import { useProgressBarContext } from "../context/ProgressBarContext";
-import { ChevronDown, User, Check } from "lucide-react";
+import { ChevronDown, User, Check,AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import formBackground from "../assets/images/form-background.png";
 import Steps from "./Steps/Steps";
@@ -13,7 +13,9 @@ const ApplyingPromoCode = () => {
   const [appliedPromo, setAppliedPromo] = useState(null);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [agreedToDataUse, setAgreedToDataUse] = useState(false);
-
+  // const { currentStep, setCurrentStep, steps,formData, setFormData ,selectedWorkshops, setSelectedWorkshops} = useProgressBarContext();
+  const [showTermsError, setShowTermsError] = useState(false);
+  const [showDataUseError, setShowDataUseError] = useState(false);
   const originalPrice = 60.99;
   const premiumTicketPrice = 50.0;
   const { currentStep, setCurrentStep, steps } = useProgressBarContext();
@@ -41,6 +43,60 @@ const ApplyingPromoCode = () => {
     }
     return total;
   };
+  const handleNext=()=>{
+    // if (currentStep < 4) {
+    //   setCurrentStep(currentStep + 1);
+    // } else if (currentStep === 4) {
+    //   navigate("/success");
+    // }
+    
+    // Reset error states
+    setShowTermsError(false);
+    setShowDataUseError(false);
+
+    // Check validation
+    let hasErrors = false;
+
+    if (!agreedToTerms) {
+      setShowTermsError(true);
+      hasErrors = true;
+    }
+
+    if (!agreedToDataUse) {
+      setShowDataUseError(true);
+      hasErrors = true;
+    }
+
+    // If no errors, proceed to next step
+    if (!hasErrors) {
+      if (currentStep < 4) {
+        setCurrentStep(currentStep + 1);
+      } else if (currentStep === 4) {
+        navigate("/success");
+      }
+    }
+  
+    
+  }
+  const handleTermsChange = (e) => {
+    setAgreedToTerms(e.target.checked);
+    if (e.target.checked) {
+      setShowTermsError(false);
+    }
+  };
+
+  const handleDataUseChange = (e) => {
+    setAgreedToDataUse(e.target.checked);
+    if (e.target.checked) {
+      setShowDataUseError(false);
+    }
+  };
+  React.useEffect(()=>{
+    if(agreedToTerms && agreedToDataUse){
+      setCurrentStep(currentStep + 1);
+      window.scrollTo(0,0);
+    }
+  },[agreedToTerms , agreedToDataUse])
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -308,7 +364,7 @@ const ApplyingPromoCode = () => {
                     type="checkbox"
                     id="terms"
                     checked={agreedToTerms}
-                    onChange={(e) => setAgreedToTerms(e.target.checked)}
+                    onChange={handleTermsChange}
                     className="mt-1 h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded accent-green-700"
                   />
                   <label
@@ -340,13 +396,18 @@ const ApplyingPromoCode = () => {
                     faculty member.
                   </label>
                 </div>
-
+                {showTermsError && (
+                      <div className="flex items-center text-red">
+                        <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0 text-red-500" />
+                        <span className="text-red-500">Please accept the terms and conditions to continue.</span>
+                      </div>
+                    )}
                 <div className="flex items-start space-x-3">
                   <input
                     type="checkbox"
                     id="dataUse"
                     checked={agreedToDataUse}
-                    onChange={(e) => setAgreedToDataUse(e.target.checked)}
+                    onChange={handleDataUseChange}
                     className="mt-1 h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded accent-green-700"
                   />
                   <label
@@ -359,6 +420,12 @@ const ApplyingPromoCode = () => {
                     that I can object to the sending of newsletters at any time.
                   </label>
                 </div>
+                {showDataUseError && (
+                      <div className="flex items-center text-red">
+                        <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0 text-red-500" />
+                        <span className="text-red-500">Please consent to data use to continue.</span>
+                      </div>
+                    )}
               </div>
 
               {/* Action Buttons */}
@@ -373,6 +440,7 @@ const ApplyingPromoCode = () => {
                     //   navigate('/register-form')
                     // }
                     navigate("/register-form");
+                    window.scrollTo(0,0);
                   }}
                 >
                   PREVIOUS
@@ -380,13 +448,7 @@ const ApplyingPromoCode = () => {
                 <button
                   className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   // disabled={!agreedToTerms || !agreedToDataUse}
-                  onClick={() => {
-                    if (currentStep < 4) {
-                      setCurrentStep(currentStep + 1);
-                    } else if (currentStep === 4) {
-                      navigate("/success");
-                    }
-                  }}
+                  onClick={handleNext}
                 >
                   NEXT
                 </button>

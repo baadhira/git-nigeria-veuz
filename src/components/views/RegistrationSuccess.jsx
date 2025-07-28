@@ -6,7 +6,7 @@ import { useProgressBarContext } from '../context/ProgressBarContext';
 const RegistrationSuccess = () => {
   const navigate = useNavigate();
   const {
-    currentStep, setCurrentStep,steps
+    currentStep, setCurrentStep,steps,formData, setFormData ,selectedWorkshops, setSelectedWorkshops,resetForm
   } = useProgressBarContext();
   return (
     <div className="min-h-screen flex flex-col">
@@ -76,6 +76,8 @@ const RegistrationSuccess = () => {
             onClick={() => {
               navigate('/')
               setCurrentStep(1)
+              setSelectedWorkshops([])
+              resetForm()
             }}
             >
               Return to Homepage

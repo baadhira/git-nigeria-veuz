@@ -115,41 +115,13 @@ const validationRules = {
 };
 export default function RegistrationForm() {
   const navigate = useNavigate();
-  const [selectedWorkshops, setSelectedWorkshops] = useState([]);
+  // const [selectedWorkshops, setSelectedWorkshops] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    country: "",
-    region: "",
-    email: "",
-    confirmEmail: "",
-    nationality: "",
-    mobileNumber: "",
-    companyName: "",
-    jobTitle: "",
-    companyType: "",
-    industry: "",
-    selectedWorkshops:[],
-    workshops: {
-      "Global Leaders Forum !NEW (3 Days)": false,
-      "GITEX Main Stage": false,
-      "Artificial Intelligence & Robotics (15)": false,
-      "Future Health !NEW (2 Days)": false,
-      "Cybersecurity (4 Days)": false,
-      "Future Health !NEW (2 Days) - Copy": false,
-      "Digital Cities (1 Day)": false,
-      "Edtech (1 Day)": false,
-      "Energy Transition (1 Day)": false,
-      "Intelligent Connectivity (1 Day)": false,
-      "Digital Finance (1 Day)": false,
-      "Future Mobility (1 Day)": false,
-    },
-  });
+ 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { currentStep, setCurrentStep, steps } = useProgressBarContext();
+  const { currentStep, setCurrentStep, steps,formData, setFormData ,selectedWorkshops, setSelectedWorkshops} = useProgressBarContext();
   // const handleInputChange = (field, value) => {
   //   setFormData((prev) => ({
   //     ...prev,
@@ -277,6 +249,7 @@ useEffect(() => {
   }
 }, [selectedWorkshops, touched.selectedWorkshops]);
   const handleNext = async () => {
+    
     setIsSubmitting(true);
 
     try {
@@ -308,10 +281,13 @@ useEffect(() => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Navigate to next step
-      if (currentStep < 4) {
+      if (currentStep < 2) {
         setCurrentStep(currentStep + 1);
-      }else if (currentStep === 4) {
+        window.scrollTo(0,0)
+      }else if (currentStep === 2) {
               navigate("/promo-code");
+              setCurrentStep(currentStep + 1);
+              window.scrollTo(0,0)
               }
     } catch (error) {
       console.error("Submission error:", error);
@@ -982,6 +958,7 @@ useEffect(() => {
               onClick={() => {
                 if (currentStep < 4) {
                   setCurrentStep(currentStep - 1);
+                  window.scrollTo(0,0)
                 }
                 // else{
                 //   setCurrentStep(currentStep - 1);

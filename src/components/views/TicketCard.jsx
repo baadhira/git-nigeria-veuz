@@ -248,8 +248,8 @@ const TicketCard = ({
             GITEX NIGERIA exhibition and all free conference
           </div>
         </div> */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-4 h-8 bg-white rounded-r-full"></div>
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-4 h-8 bg-white rounded-l-full"></div>
+            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-4 h-8 bg-white rounded-r-full shadow-none"></div>
+            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-4 h-8 bg-white rounded-l-full shadow-none" ></div>
             <div className={`relative z-10 h-full ${gitexLogo ? "py-5" : ""}`}>
               {/* Description */}
               <div className="mb-6">
@@ -633,7 +633,10 @@ const GitexTicketSelection = () => {
               </div>
 
               <button
-                onClick={() => navigate("/register-form")}
+                onClick={() => {
+                  window.scrollTo(0,0);
+                  navigate("/register-form");
+                }}
                 className="bg-white text-green-800 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center gap-2"
               >
                 Buy Now

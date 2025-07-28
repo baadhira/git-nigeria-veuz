@@ -84,9 +84,9 @@ export default function GitexSidebar() {
           <div className="border-b border-green-500 border-opacity-30 pb-1">
             <span className="text-xs uppercase tracking-wide">JOB TITLE</span>
 
-            <div className="text-white opacity-60 text-xs mt-1">
-              To be filled
-            </div>
+            <div className="text-sm text-gray-800 font-medium">
+            {/* {formData.jobTitle || ''} */}
+          </div>
           </div>
 
           <div className="border-b border-green-500 border-opacity-30 pb-1">
