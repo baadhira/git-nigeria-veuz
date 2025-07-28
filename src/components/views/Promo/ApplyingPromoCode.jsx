@@ -17,7 +17,7 @@ const ApplyingPromoCode = () => {
   const [showDataUseError, setShowDataUseError] = useState(false);
   const originalPrice = 60.99;
   const premiumTicketPrice = 50.0;
-  const { currentStep, setCurrentStep, steps } = useProgressBarContext();
+  const { currentStep, setCurrentStep, steps,totalBuyPrice } = useProgressBarContext();
   const handleApplyPromo = () => {
     if (promoCode.trim()) {
       setAppliedPromo({
@@ -36,7 +36,7 @@ const ApplyingPromoCode = () => {
   };
 
   const calculateTotal = () => {
-    let total = originalPrice;
+    let total = totalBuyPrice;
     if (appliedPromo) {
       total -= appliedPromo.discount;
     }
@@ -245,7 +245,7 @@ const ApplyingPromoCode = () => {
                     Total:{" "}
                     {appliedPromo && (
                       <span className="text-gray-400 line-through text-m mr-2">
-                        EUR {originalPrice}&nbsp;
+                        EUR {totalBuyPrice}&nbsp;
                       </span>
                     )}
                      EUR {calculateTotal().toFixed(2)}
