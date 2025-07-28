@@ -11,12 +11,12 @@ import loginImg from "../assets/images/login.png";
 import { useNavigate } from "react-router-dom";
 import gitexLogo from "../assets/images/gitexnigeria.png";
 import formBackground from "../assets/images/form-background.png";
-import WorkshopSelector from "./WorkshopSelector";
-import { useProgressBarContext } from "../context/ProgressBarContext";
-import Steps from "./Steps/Steps";
+import WorkshopSelector from "../WorkshopSelector";
+import { useProgressBarContext } from "../../context/ProgressBarContext";
+import Steps from "../Steps/Steps";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import Sidebar from "./Registration/RegistrationSidebar";
+import Sidebar from "./RegistrationSidebar";
 const validators = {
   required: (value) => {
     if (!value || (typeof value === "string" && !value.trim())) {
@@ -339,7 +339,7 @@ useEffect(() => {
   const ErrorTooltip = ({ error, show }) => {
     if (!error || !show) return null;
     return (
-      <div className="absolute top-full left-0 right-0 z-10 transform">
+      <div className="absolute top-full left-0 right-0 z-10 mt-1 transform">
         <div className="bg-red-600 text-white px-3 py-2 rounded-lg shadow-lg text-xs relative">
           <div className="absolute -top-1 left-4 w-2 h-2 bg-red-600 transform rotate-45"></div>
           <div className="flex items-center">

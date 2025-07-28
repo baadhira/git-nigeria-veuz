@@ -323,10 +323,17 @@ const TicketCard = ({
               {!isFree && (
                 <div className={`flex items-center justify-between ${quantityBuy===0?"":'mt-2'}`}>
                   <div className="flex items-center space-x-2">
-                    <span className="text-red-400 line-through text-sm">
-                      USD {originalPrice}
+                    <span className="text-white text-m font-bold">
+                      USD  
+                      {/* <span className="text-red-400 line-through text-sm">{originalPrice}</span> */}
+ <span className="text-grey-500 text-m relative ml-1">
+                {originalPrice}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-12 h-1 bg-red-500 transform -rotate-12 origin-center"></div>
+                </div>
+              </span>
                     </span>
-                    <span className="text-xs text-gray-300">32.5</span>
+                    <span className="text-xs text-gray-300 font-bold bg-transparent border-2 border-white px-2 rounded">32.5</span>
                   </div>
 
                   {quantityBuy===0?<button className="bg-white text-xs text-black px-3 py-2 rounded font-bold hover:bg-gray-100 transition-colors mt-3" 
@@ -339,7 +346,7 @@ const TicketCard = ({
                     >
                       -
                     </button>
-                    <span className="px-4 py-1 text-white bg-gray-800">
+                    <span className="px-3 py-1 text-black bg-white font-bold">
                       {quantityBuy}
                     </span>
                     <button
