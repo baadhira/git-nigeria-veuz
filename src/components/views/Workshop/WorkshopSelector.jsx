@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
 import { X } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import headerBg from "../../assets/images/header.png";
 const WorkshopSelector = ({ onClose ,selectedWorkshops, setSelectedWorkshops}) => {
   // const [selectedWorkshops, setSelectedWorkshops] = useState([]);

@@ -1,6 +1,6 @@
 import React from 'react';
-import headerBg from "../../assets/images/register-header.png";
 import { useNavigate } from "react-router-dom";
+import headerBg from "../../assets/images/register-header.png";
 import { useProgressBarContext } from '../../context/ProgressBarContext';
 
 const RegistrationSuccess = () => {
@@ -45,7 +45,7 @@ const RegistrationSuccess = () => {
           </div>
         </div>
 
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-2xl">
           <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 text-center relative z-10">
             <div className="w-82 h-1 bg-green-600 mx-auto mb-6 lg:w-82"></div>
             

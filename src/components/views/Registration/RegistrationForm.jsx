@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from "react";
 import {
-  ChevronDown,
-  User,
-  Check,
   AlertCircle,
   CheckCircle,
-  Edit3,
+  ChevronDown,
+  Edit3
 } from "lucide-react";
-import headerBg from "../../assets/images/register-header.png";
-import loginImg from "../../assets/images/login.png";
-import { useNavigate } from "react-router-dom";
-import gitexLogo from "../../assets/images/gitexnigeria.png";
-import formBackground from "../../assets/images/form-background.png";
-import WorkshopSelector from "../Workshop/WorkshopSelector";
-import { useProgressBarContext } from "../../context/ProgressBarContext";
-import Steps from "../Steps/Steps";
+import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useNavigate } from "react-router-dom";
+import formBackground from "../../assets/images/form-background.png";
+import gitexLogo from "../../assets/images/gitexnigeria.png";
+import loginImg from "../../assets/images/login.png";
+import headerBg from "../../assets/images/register-header.png";
+import { useProgressBarContext } from "../../context/ProgressBarContext";
+import Steps from "../Steps/Steps";
+import WorkshopSelector from "../Workshop/WorkshopSelector";
 import Sidebar from "./RegistrationSidebar";
 
 const validators = {
