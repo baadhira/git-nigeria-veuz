@@ -1,16 +1,11 @@
 import React, { useState } from "react";
-import { ChevronDown } from "lucide-react";
-import headerBg from "../../assets/images/header.png";
-import sidebarBg from "../../assets/images/sidebar-top.png";
-import sidebarInside from "../../assets/images/sidebar-inside.png";
-import Badgeproperpostion from "../Badgeproperpostion";
-import cardBg from "../../assets/images/cardBg.png";
 import { useNavigate } from "react-router-dom";
+import gitexLogo from "../../assets/images/card-gitex-icon.png";
 import cardOne from "../../assets/images/card1.png";
 import cardTwo from "../../assets/images/card2.jpg";
 import cardThree from "../../assets/images/card3.jpg";
 import cardFour from "../../assets/images/card4.jpg";
-import gitexLogo from "../../assets/images/card-gitex-icon.png";
+import headerBg from "../../assets/images/header.png";
 
 const TicketCard = ({
   title,
