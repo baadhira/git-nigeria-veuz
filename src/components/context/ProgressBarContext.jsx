@@ -40,6 +40,7 @@ export const FormProvider = ({ children }) => {
     },
   });
   const [totalBuyPrice,setTotalBuyPrice]=useState(0);
+  const [totalQuantity,setTotalQuantity]=useState(0);
   const resetForm=()=>{
     setFormData({
       firstName: "",
@@ -73,7 +74,7 @@ export const FormProvider = ({ children }) => {
   }
   const [selectedWorkshops, setSelectedWorkshops] = useState([]);
   return (
-    <ProgressBarContext.Provider value={{ currentStep, setCurrentStep,steps,formData, setFormData,selectedWorkshops, setSelectedWorkshops,resetForm,totalBuyPrice,setTotalBuyPrice }}>
+    <ProgressBarContext.Provider value={{ totalQuantity,setTotalQuantity,currentStep, setCurrentStep,steps,formData, setFormData,selectedWorkshops, setSelectedWorkshops,resetForm,totalBuyPrice,setTotalBuyPrice }}>
       {children}
     </ProgressBarContext.Provider>
   );

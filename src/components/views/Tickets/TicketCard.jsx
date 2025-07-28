@@ -338,9 +338,9 @@ const useTicketManager = (ticketData) => {
       return total + (quantity * price);
     }, 0);
   }, [tickets, ticketData]);
-  const { totalBuyPrice,setTotalBuyPrice } = useProgressBarContext();
+  const { totalBuyPrice,setTotalBuyPrice ,totalQuantity,setTotalQuantity,setTotalProduct} = useProgressBarContext();
 
-  const totalQuantity = useMemo(() => {
+  const totalProduct = useMemo(() => {
     setTotalBuyPrice(Object.values(tickets).reduce((sum, qty) => sum + qty, 0))
     return Object.values(tickets).reduce((sum, qty) => sum + qty, 0);
   }, [tickets]);
@@ -360,8 +360,9 @@ const useTicketManager = (ticketData) => {
     updateQuantity,
     resetAll,
     calculateTotal,
-    totalQuantity,
-    getTicketSummary
+    totalProduct,
+    getTicketSummary,
+    setTotalQuantity
   };
 };
 
@@ -388,7 +389,7 @@ const GitexTicketSelection = () => {
     {
       id: "visitor2",  
       title: "VISITOR 3 DAY ACCESS TICKET",
-      price: "431.36",
+      price: "0",
       backgroundColor: "orange",
       features: [
         ["Access to Connections & Investor Lounge"], 
@@ -466,22 +467,25 @@ const GitexTicketSelection = () => {
     updateQuantity,
     resetAll,
     calculateTotal,
-    totalQuantity,
-    getTicketSummary
+    totalProduct,
+    getTicketSummary,
+    setTotalQuantity
   } = useTicketManager(ticketData);
 
   const handleBuyNow = useCallback(() => {
     const selectedTickets = getTicketSummary;
-    
+    console.log(selectedTickets,'selectedTicketsselectedTickets')
+    console.log(totalProduct,'totalProduct')
+    setTotalQuantity(totalProduct)
     // localStorage.setItem('selectedTickets', JSON.stringify({
     //   tickets: selectedTickets,
     //   total: calculateTotal,
-    //   totalQuantity: totalQuantity
+    //   totalProduct: totalProduct
     // }));
     
     window.scrollTo(0, 0);
     navigate("/register-form");
-  }, [getTicketSummary, calculateTotal, totalQuantity, navigate]);
+  }, [getTicketSummary, calculateTotal, totalProduct, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -522,14 +526,14 @@ const GitexTicketSelection = () => {
               <div className="text-lg font-normal">incl. 19% VAT</div>
               <div className="text-xs opacity-70 cursor-pointer hover:opacity-100 transition-opacity mt-1">
                 View Ticket Summary
-                {totalQuantity > 0 && (
-                  <span className="ml-2">({totalQuantity} items)</span>
+                {totalProduct > 0 && (
+                  <span className="ml-2">({totalProduct} items)</span>
                 )}
               </div>
             </div>
             
             <div className="flex flex-col gap-3">
-              {totalQuantity > 0 && (
+              {totalProduct > 0 && (
                 <button
                   onClick={resetAll}
                   className="w-full bg-red-500 text-white px-4 py-3 rounded-lg font-bold hover:bg-red-600 transition-colors text-sm"
@@ -540,17 +544,17 @@ const GitexTicketSelection = () => {
               
               <button
                 onClick={handleBuyNow}
-                disabled={totalQuantity === 0}
+                disabled={totalProduct === 0}
                 className={`w-full py-3 px-4 rounded-lg font-bold transition-colors flex items-center justify-center gap-2 text-sm ${
-                  totalQuantity === 0
+                  totalProduct === 0
                     ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
                     : 'bg-white text-green-800 hover:bg-gray-100'
                 }`}
               >
                 Buy Now
-                {totalQuantity > 0 && (
+                {totalProduct > 0 && (
                   <span className="bg-green-700 text-white text-xs px-2 py-1 rounded-full ml-2">
-                    {totalQuantity}
+                    {totalProduct}
                   </span>
                 )}
               </button>
@@ -569,14 +573,14 @@ const GitexTicketSelection = () => {
                 </div>
                 <div className="text-xs opacity-70 cursor-pointer hover:opacity-100 transition-opacity">
                   View Ticket Summary
-                  {totalQuantity > 0 && (
-                    <span className="ml-2">({totalQuantity} items)</span>
+                  {totalProduct > 0 && (
+                    <span className="ml-2">({totalProduct} items)</span>
                   )}
                 </div>
               </div>
 
               <div className="flex gap-2">
-                {totalQuantity > 0 && (
+                {totalProduct > 0 && (
                   <button
                     onClick={resetAll}
                     className="bg-red-500 text-white px-4 py-3 rounded-lg font-bold hover:bg-red-600 transition-colors whitespace-nowrap"
@@ -587,17 +591,17 @@ const GitexTicketSelection = () => {
                 
                 <button
                   onClick={handleBuyNow}
-                  disabled={totalQuantity === 0}
+                  disabled={totalProduct === 0}
                   className={`px-6 py-3 rounded-lg font-bold transition-colors flex items-center gap-2 whitespace-nowrap ${
-                    totalQuantity === 0
+                    totalProduct === 0
                       ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
                       : 'bg-white text-green-800 hover:bg-gray-100'
                   }`}
                 >
                   Buy Now
-                  {totalQuantity > 0 && (
-                    <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                      {totalQuantity}
+                  {totalProduct > 0 && (
+                    <span className="bg-green-700 text-white text-xs px-2 py-1 rounded-full">
+                      {totalProduct}
                     </span>
                   )}
                 </button>

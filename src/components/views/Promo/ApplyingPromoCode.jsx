@@ -36,7 +36,7 @@ const ApplyingPromoCode = () => {
   };
 
   const calculateTotal = () => {
-    let total = totalBuyPrice;
+    let total = originalPrice;
     if (appliedPromo) {
       total -= appliedPromo.discount;
     }
@@ -117,7 +117,7 @@ const ApplyingPromoCode = () => {
                       PREMIUM TICKET x 2
                     </h3>
                     {!appliedPromo && (
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 ml-2">
                         Student Ticket Access On Day 3 Only
                       </p>
                     )}
@@ -141,11 +141,11 @@ const ApplyingPromoCode = () => {
                   </div>
                 </div>
 
-                {!appliedPromo && (
+                {/* {!appliedPromo && (
                   <p className="text-sm text-gray-600 mb-4">
                     Student Ticket Access On Day 3 Only
                   </p>
-                )}
+                )} */}
               </div>
 
               <div className="mb-6">
@@ -245,7 +245,7 @@ const ApplyingPromoCode = () => {
                     Total:{" "}
                     {appliedPromo && (
                       <span className="text-gray-400 line-through text-m mr-2">
-                        EUR {totalBuyPrice}&nbsp;
+                        EUR {originalPrice}&nbsp;
                       </span>
                     )}
                      EUR {calculateTotal().toFixed(2)}
