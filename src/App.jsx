@@ -1,14 +1,9 @@
-import ApplyingPromoCode from "./components/views/ApplyingPromoCode"
-import BestSellerCard from "./components/views/BestSellerCard"
-import CardMain from "./components/views/CardMain"
-import RegistrationForm from "./components/views/RegistrationForm"
-import RegistrationSuccess from "./components/views/RegistrationSuccess"
-import GitexTicketSelection from "./components/views/TicketCard"
-import TicketList from "./components/views/TicketList"
-import WorkshopSelector from "./components/views/WorkshopSelector"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { FormProvider } from "./components/context/ProgressBarContext";
-import Badgewithfontsizelarge from "./components/views/Badgewithfontsizelarge"
+import RegistrationForm from "./components/views/Registration/RegistrationForm";
+import RegistrationSuccess from "./components/views/Registration/RegistrationSuccess";
+import ApplyingPromoCode from "./components/views/Promo/ApplyingPromoCode"
+import GitexTicketSelection from "./components/views/Tickets/TicketCard";
 
 function App() {
   return (
@@ -16,11 +11,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<GitexTicketSelection/>} />
-        {/* GitexTicketSelection */}
-        <Route path="/register-form" element={<RegistrationForm />} />
-        <Route path="/promo-code" element={<ApplyingPromoCode />} />
-        <Route path="/success" element={<RegistrationSuccess />} />
-
+        <Route path="/register-form" element={<RegistrationForm/>} />
+        <Route path="/promo-code" element={<ApplyingPromoCode/>} />
+        <Route path="/success" element={<RegistrationSuccess/>} />
       </Routes>
     </Router>
     </FormProvider>

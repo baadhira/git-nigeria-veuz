@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import headerBg from "../assets/images/header.png";
-import sidebarBg from "../assets/images/sidebar-top.png";
-import sidebarInside from "../assets/images/sidebar-inside.png";
-import Badgeproperpostion from "./Badgeproperpostion";
-import cardBg from "../assets/images/cardBg.png";
+import headerBg from "../../assets/images/header.png";
+import sidebarBg from "../../assets/images/sidebar-top.png";
+import sidebarInside from "../../assets/images/sidebar-inside.png";
+import Badgeproperpostion from "../Badgeproperpostion";
+import cardBg from "../../assets/images/cardBg.png";
 import { useNavigate } from "react-router-dom";
-import cardOne from "../assets/images/card1.png";
-import cardTwo from "../assets/images/card2.jpg";
-import cardThree from "../assets/images/card3.jpg";
-import cardFour from "../assets/images/card4.jpg";
-import gitexLogo from "../assets/images/card-gitex-icon.png";
+import cardOne from "../../assets/images/card1.png";
+import cardTwo from "../../assets/images/card2.jpg";
+import cardThree from "../../assets/images/card3.jpg";
+import cardFour from "../../assets/images/card4.jpg";
+import gitexLogo from "../../assets/images/card-gitex-icon.png";
 
 const TicketCard = ({
   title,
@@ -22,7 +22,7 @@ const TicketCard = ({
   backgroundColor,
   accentColor = "green",
   features = [],
-  badgeType = null, // "exclusive", "bestseller", or null
+  badgeType = null, 
   quantity = 0,
   onQuantityChange,
   backgroundImage,
@@ -114,7 +114,6 @@ const TicketCard = ({
       >
         {badgeType && (
           <div className="absolute -top-1 -left-1 z-20 ">
-            {/* Triangle using clip-path with shadow */}
             <div
               className="w-[6rem] h-[6rem] flex items-center justify-center shadow-lg "
               style={{
@@ -127,7 +126,6 @@ const TicketCard = ({
             >
               <div className="absolute top-5 left-0.5 text-white text-[12px] font-bold transform -rotate-45 whitespace-nowrap">
                 {badgeValue}
-                {/* BEST SELLER */}
               </div>
             </div>
           </div>
@@ -137,51 +135,11 @@ const TicketCard = ({
           // relative  rounded-xl overflow-hidden text-white ${bgColorClass[backgroundColor]} shadow-lg
           // relative w-80 bg-white rounded-2xl overflow-visible shadow-xl
         >
-          {/* Decorative Pixels Background */}
-          {/* <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-32 h-32">
-            <div className="grid grid-cols-8 gap-1 h-full">
-              {[...Array(64)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-full h-full ${
-                    i % 3 === 0
-                      ? "bg-green-300"
-                      : i % 3 === 1
-                      ? "bg-green-400"
-                      : "bg-green-500"
-                  }`}
-                ></div>
-              ))}
-            </div>
-          </div>
-          <div className="absolute top-0 right-0 w-40 h-40">
-            <div className="grid grid-cols-10 gap-1 h-full">
-              {[...Array(100)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-full h-full ${
-                    i % 4 === 0
-                      ? "bg-lime-300"
-                      : i % 4 === 1
-                      ? "bg-lime-400"
-                      : i % 4 === 2
-                      ? "bg-green-400"
-                      : "bg-green-500"
-                  }`}
-                ></div>
-              ))}
-            </div>
-          </div>
-        </div> */}
-          {/* {renderBadge()} */}
-
-          {/* Header */}
+          
           <div
             className={`p-2 border-b border-white/20 ${bgColorClass[backgroundColor]}`}
           >
             <div className="absolute inset-0 opacity-20">
-              {/* Right Side Pixels */}
               <div className="absolute top-2 right-4 w-3 h-3 bg-white opacity-60"></div>
               <div className="absolute top-6 right-8 w-2 h-2 bg-white opacity-40"></div>
               <div className="absolute top-1 right-12 w-4 h-4 bg-white opacity-30"></div>
@@ -189,38 +147,30 @@ const TicketCard = ({
               <div className="absolute top-8 right-2 w-3 h-3 bg-white opacity-35"></div>
               <div className="absolute top-3 right-20 w-2 h-2 bg-white opacity-45"></div>
 
-              {/* Medium Pixels */}
               <div className="absolute top-7 right-24 w-2 h-2 bg-white opacity-25"></div>
               <div className="absolute top-0 right-28 w-3 h-3 bg-white opacity-40"></div>
               <div className="absolute top-4 right-32 w-2 h-2 bg-white opacity-35"></div>
 
-              {/* Small Pixels */}
               <div className="absolute top-2 right-36 w-1 h-1 bg-white opacity-30"></div>
               <div className="absolute top-6 right-40 w-1 h-1 bg-white opacity-25"></div>
               <div className="absolute top-9 right-44 w-1 h-1 bg-white opacity-40"></div>
 
-              {/* Left Side Pixels */}
               <div className="absolute top-5 left-4 w-3 h-3 bg-white opacity-80"></div>
               <div className="absolute top-10 left-2 w-2 h-2 bg-white opacity-70"></div>
               <div className="absolute top-5 left-6 w-3 h-3 bg-white opacity-80"></div>
               <div className="absolute top-10 left-8 w-2 h-2 bg-white opacity-70"></div>
               <div className="absolute top-10 left-8 w-3 h-3 bg-white opacity-80"></div>
               <div className="absolute top-15 left-10 w-2 h-2 bg-white opacity-70"></div>
-              {/* ✅ Extra Pixels (Added Below) */}
 
-              {/* Top Right */}
               <div className="absolute top-1 right-1 w-2 h-2 bg-white opacity-25"></div>
               <div className="absolute top-10 right-6 w-3 h-3 bg-white opacity-20"></div>
 
-              {/* Bottom Right */}
               <div className="absolute bottom-4 right-8 w-2 h-2 bg-white opacity-35"></div>
               <div className="absolute bottom-2 right-2 w-3 h-3 bg-white opacity-30"></div>
 
-              {/* Bottom Left */}
               <div className="absolute bottom-3 left-4 w-2 h-2 bg-white opacity-30"></div>
               <div className="absolute bottom-6 left-1 w-1 h-1 bg-white opacity-25"></div>
 
-              {/* Top Left */}
               <div className="absolute top-0 left-3 w-2 h-2 bg-white opacity-40"></div>
               <div className="absolute top-6 left-5 w-1 h-1 bg-white opacity-35"></div>
             </div>
@@ -229,7 +179,6 @@ const TicketCard = ({
             <div className={`text-xs opacity-90 ml-12 text-[#E6FF00] font-bold ${badgeType?'ml-16':''}`}>VIEW DETAILS →</div>
           </div>
 
-          {/* Content */}
 
           <div className="relative text-white px-6 py-6 h-full">
             {backgroundImage && (
@@ -239,7 +188,6 @@ const TicketCard = ({
               ></div>
             )}
 
-            {/* Dark Overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-75"></div>
             {/* <div className="mb-4">
           <div className="text-sm opacity-90 mb-2">
@@ -251,7 +199,6 @@ const TicketCard = ({
             <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-4 h-8 bg-white rounded-r-full shadow-none"></div>
             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-4 h-8 bg-white rounded-l-full shadow-none" ></div>
             <div className={`relative z-10 h-full ${gitexLogo ? "py-5" : ""}`}>
-              {/* Description */}
               <div className="mb-6">
                 <p className="text-xs text-gray-300 leading-relaxed">
                   Visitor Passes provide{" "}
@@ -265,7 +212,6 @@ const TicketCard = ({
                 </p>
               </div>
 
-              {/* Features List */}
               {gitexLogo ? (
                 <div className={`${gitexLogo ? "h-20" : ""}`}>
                   <img src={gitexLogo} className="w-50 h-10" />
@@ -359,7 +305,6 @@ const TicketCard = ({
                   }
                 </div>
               )}
-              {/* Bottom Section */}
               {isFree &&<div className="">
                 <div className="flex items-end justify-between">
                   <div>
@@ -378,67 +323,13 @@ const TicketCard = ({
                   <button className="bg-white text-xs text-black px-3 py-2 rounded font-bold hover:bg-gray-100 transition-colors mt-1">
                     {buttonText}
                   </button>
-                  {/* {quantityBuy===0? <button className="bg-white text-xs text-black px-3 py-2 rounded font-bold hover:bg-gray-100 transition-colors mt-1">
-                    {buttonText}
-                  </button>:
-                  <div className="flex items-center border border-gray-600 rounded">
-                  <button
-                    onClick={() => setQuantity(Math.max(0, quantityBuy - 1))}
-                    className="px-3 py-1 text-white hover:bg-gray-700"
-                  >
-                    -
-                  </button>
-                  <span className="px-4 py-1 text-white bg-gray-800">
-                    {quantityBuy}
-                  </span>
-                  <button
-                    onClick={() => setQuantity(quantityBuy + 1)}
-                    className="px-3 py-1 text-white hover:bg-gray-700"
-                  >
-                    +
-                  </button>
-                </div>} */}
+                  
                 </div>
               </div>
               }
             </div>
 
-            {/* Price and Quantity */}
-            {/* <div className="border-t border-white/20 pt-4">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <div className="text-sm opacity-75">FREE</div>
-              <div className="text-xs opacity-60">INCL 19% VAT</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="text-sm font-medium">
-                {currency} {discountedPrice}
-              </div>
-              <div className="text-lg font-bold">{price}</div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center border border-white/30 rounded">
-              <button
-                onClick={() => onQuantityChange(Math.max(0, quantity - 1))}
-                className="w-8 h-8 flex items-center justify-center hover:bg-white/10"
-              >
-                -
-              </button>
-              <span className="w-8 text-center text-sm">{quantity}</span>
-              <button
-                onClick={() => onQuantityChange(quantity + 1)}
-                className="w-8 h-8 flex items-center justify-center hover:bg-white/10"
-              >
-                +
-              </button>
-            </div>
-            <button className="bg-white text-gray-800 px-4 py-2 rounded font-bold text-sm hover:bg-gray-100 transition-colors">
-              BUY NOW
-            </button>
-          </div>
-        </div> */}
+            
           </div>
         </div>
       </div>
@@ -474,10 +365,10 @@ const GitexTicketSelection = () => {
       backgroundColor: "purple",
       // badgeType: "bestseller",
       features: [
-        ["Access to Connections & Investor Lounge"], // single line
-        ["Network Events", "All Conference Tracks"], // two in one row
-        ["All Masterclasses", "3 Days Access to the Show"], // two in one row
-        ["Access to Dubai Internet City Lounge"], // single line
+        ["Access to Connections & Investor Lounge"], 
+        ["Network Events", "All Conference Tracks"], 
+        ["All Masterclasses", "3 Days Access to the Show"], 
+        ["Access to Dubai Internet City Lounge"], 
       ],
       backgroundImage: cardOne,
       gitexLogo: gitexLogo,
@@ -490,10 +381,10 @@ const GitexTicketSelection = () => {
       discountedPrice: "431.36",
       backgroundColor: "orange",
       features: [
-        ["Access to Connections & Investor Lounge"], // single line
-        ["Network Events", "All Conference Tracks"], // two in one row
-        ["All Masterclasses", "3 Days Access to the Show"], // two in one row
-        ["Access to Dubai Internet City Lounge"], // single line
+        ["Access to Connections & Investor Lounge"], 
+        ["Network Events", "All Conference Tracks"], 
+        ["All Masterclasses", "3 Days Access to the Show"], 
+        ["Access to Dubai Internet City Lounge"], 
       ],
       backgroundImage: cardTwo,
       isFree: true,
@@ -507,10 +398,10 @@ const GitexTicketSelection = () => {
       badgeType: "exclusive",
       badgeValue: "EXCLUSIVE",
       features: [
-        ["Access to Connections & Investor Lounge"], // single line
-        ["Network Events", "All Conference Tracks"], // two in one row
-        ["All Masterclasses", "3 Days Access to the Show"], // two in one row
-        ["Access to Dubai Internet City Lounge"], // single line
+        ["Access to Connections & Investor Lounge"], 
+        ["Network Events", "All Conference Tracks"], 
+        ["All Masterclasses", "3 Days Access to the Show"], 
+        ["Access to Dubai Internet City Lounge"], 
       ],
       backgroundImage: cardThree,
       isFree: true,
@@ -524,10 +415,10 @@ const GitexTicketSelection = () => {
       badgeType: "bestseller",
       badgeValue: "BEST SELLER",
       features: [
-        ["Access to Connections & Investor Lounge"], // single line
-        ["Network Events", "All Conference Tracks"], // two in one row
-        ["All Masterclasses", "3 Days Access to the Show"], // two in one row
-        ["Access to Dubai Internet City Lounge"], // single line
+        ["Access to Connections & Investor Lounge"], 
+        ["Network Events", "All Conference Tracks"], 
+        ["All Masterclasses", "3 Days Access to the Show"], 
+        ["Access to Dubai Internet City Lounge"],
       ],
       backgroundImage: cardFour,
       isFree: true,
@@ -539,10 +430,10 @@ const GitexTicketSelection = () => {
       discountedPrice: "0",
       backgroundColor: "lightgreen",
       features: [
-        ["Access to Connections & Investor Lounge"], // single line
-        ["Network Events", "All Conference Tracks"], // two in one row
-        ["All Masterclasses", "3 Days Access to the Show"], // two in one row
-        ["Access to Dubai Internet City Lounge"], // single line
+        ["Access to Connections & Investor Lounge"],
+        ["Network Events", "All Conference Tracks"], 
+        ["All Masterclasses", "3 Days Access to the Show"],
+        ["Access to Dubai Internet City Lounge"], 
       ],
       backgroundImage: cardFour,
       isFree: true,
@@ -554,10 +445,10 @@ const GitexTicketSelection = () => {
       discountedPrice: "0",
       backgroundColor: "blue",
       features: [
-        ["Access to Connections & Investor Lounge"], // single line
-        ["Network Events", "All Conference Tracks"], // two in one row
-        ["All Masterclasses", "3 Days Access to the Show"], // two in one row
-        ["Access to Dubai Internet City Lounge"], // single line
+        ["Access to Connections & Investor Lounge"],
+        ["Network Events", "All Conference Tracks"], 
+        ["All Masterclasses", "3 Days Access to the Show"], 
+        ["Access to Dubai Internet City Lounge"], 
       ],
       backgroundImage: cardThree,
       isFree: true,
@@ -650,7 +541,6 @@ const GitexTicketSelection = () => {
           </div>
         </div>
       </div>
-      {/* <Badgeproperpostion /> */}
     </>
   );
 };

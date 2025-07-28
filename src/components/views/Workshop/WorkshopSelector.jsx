@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react";
 import { X } from "lucide-react";
-import headerBg from "../assets/images/header.png";
+import headerBg from "../../assets/images/header.png";
 const WorkshopSelector = ({ onClose ,selectedWorkshops, setSelectedWorkshops}) => {
   // const [selectedWorkshops, setSelectedWorkshops] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");

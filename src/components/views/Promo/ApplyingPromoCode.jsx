@@ -1,10 +1,10 @@
+import { AlertCircle } from "lucide-react";
 import React, { useState } from "react";
-import headerBg from "../assets/images/register-header.png";
-import { useProgressBarContext } from "../context/ProgressBarContext";
-import { ChevronDown, User, Check,AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import formBackground from "../assets/images/form-background.png";
-import Steps from "./Steps/Steps";
+import formBackground from "../../assets/images/form-background.png";
+import headerBg from "../../assets/images/register-header.png";
+import { useProgressBarContext } from "../../context/ProgressBarContext";
+import Steps from "../Steps/Steps";
 
 const ApplyingPromoCode = () => {
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const ApplyingPromoCode = () => {
   const [appliedPromo, setAppliedPromo] = useState(null);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [agreedToDataUse, setAgreedToDataUse] = useState(false);
-  // const { currentStep, setCurrentStep, steps,formData, setFormData ,selectedWorkshops, setSelectedWorkshops} = useProgressBarContext();
   const [showTermsError, setShowTermsError] = useState(false);
   const [showDataUseError, setShowDataUseError] = useState(false);
   const originalPrice = 60.99;
@@ -23,9 +22,9 @@ const ApplyingPromoCode = () => {
     if (promoCode.trim()) {
       setAppliedPromo({
         code: promoCode,
-        description: `Promo code '${promoCode}' applied successfully! Applied to 2 festival ground tickets!`,
+        description: `Promo code '${promoCode}' applied successfully! Applied to 2 lowest-priced tickets!`,
         discount: 10.0,
-        ticketDiscount: "EUR 10.00 (inc. VAT)",
+        ticketDiscount: "15% (EUR 0.06 incl. VAT)",
         savings: "EUR 10.00 - You save 10.00!",
       });
     }
@@ -44,17 +43,9 @@ const ApplyingPromoCode = () => {
     return total;
   };
   const handleNext=()=>{
-    // if (currentStep < 4) {
-    //   setCurrentStep(currentStep + 1);
-    // } else if (currentStep === 4) {
-    //   navigate("/success");
-    // }
-    
-    // Reset error states
     setShowTermsError(false);
     setShowDataUseError(false);
 
-    // Check validation
     let hasErrors = false;
 
     if (!agreedToTerms) {
@@ -67,7 +58,6 @@ const ApplyingPromoCode = () => {
       hasErrors = true;
     }
 
-    // If no errors, proceed to next step
     if (!hasErrors) {
       if (currentStep < 4) {
         setCurrentStep(currentStep + 1);
@@ -100,7 +90,6 @@ const ApplyingPromoCode = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Top Green Pixelated Section */}
       <div
         className="bg-gradient-to-r from-lime-400 to-green-500 p-14 flex justify-between items-center flex-shrink-0 bg-cover bg-center bg-no-repeat relative"
         style={{
@@ -112,100 +101,19 @@ const ApplyingPromoCode = () => {
           backgroundImage: `url(${formBackground})`,
         }}
       >
-        {/* Step Indicator */}
         <Steps />
-        {/* <div className="p-4 md:p-8 mb-0">
-          <div className="flex items-center justify-center">
-            {steps.map((step, index) => {
-              const isCompleted = step.number < currentStep;
-              const isCurrent = step.number === currentStep;
 
-              return (
-                <div key={step.number} className="flex items-center">
-                  <div
-                    className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-bold border-2 transition-all duration-300 ${
-                      isCompleted
-                        ? "bg-green-600 text-white border-green-600"
-                        : isCurrent
-                        ? "bg-green-600 text-white border-green-600"
-                        : "bg-white text-gray-500 border-gray-300"
-                    }`}
-                  >
-                    {isCompleted ? (
-                      <Check size={16} className="w-4 h-4" />
-                    ) : (
-                      step.number
-                    )}
-                  </div>
-
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`h-1 mx-2 md:mx-4 rounded-full transition-all duration-300
-                ${
-                  isCompleted
-                    ? "w-16 md:w-32 bg-green-600"
-                    : isCurrent
-                    ? "w-16 md:w-32 bg-gradient-to-r from-green-600 to-gray-300"
-                    : "w-16 md:w-32 bg-gray-300"
-                }`}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div> */}
-        {/* <div className="bg-white py-4">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="flex items-center justify-center space-x-8">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
-            <div className="w-16 h-0.5 bg-gray-300"></div>
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
-            <div className="w-16 h-0.5 bg-gray-300"></div>
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
-            <div className="w-16 h-0.5 bg-gray-300"></div>
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                <div className="w-3 h-3 bg-white rounded-full"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
-        {/* Main Content */}
         <div className="flex-1 px-4 py-6 ">
           <div className="max-w-6xl mx-auto">
-            {/* Registration Summary Header */}
             <div className="bg-green-700 text-white px-6 py-4 rounded-t-lg">
               <h2 className="text-xl font-semibold">Registration Summary</h2>
             </div>
 
-            {/* Content Card */}
             <div className="bg-white border border-gray-200 rounded-b-lg p-6">
-              {/* Premium Ticket Section */}
-              <div className="mb-6">
+              <div className={`${appliedPromo?'bg-green-50 border-l-4 border-green-500':''} mb-6`}>
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h3 className="font-semibold text-gray-800">
+                    <h3 className="font-semibold text-gray-800 ml-2">
                       PREMIUM TICKET x 2
                     </h3>
                     {!appliedPromo && (
@@ -219,23 +127,27 @@ const ApplyingPromoCode = () => {
                       <p className="font-semibold">EUR 60.99</p>
                     ) : (
                       <div>
-                        <p className="text-green-600 font-semibold">
-                          FREE (10%)
+                        <p className="text-[#898787] font-semibold line-through">
+                        FREE 0.16
                         </p>
-                        <p className="text-sm text-green-600">Free for you!</p>
+                        
+                        <p className="text-green-600 font-semibold">
+                        FREE 0.16 <span className="text-sm text-white w-20 h-3 bg-green-700 rounded p-1 ">-15%</span>
+                         <span className="text-[#898787] font-semibold ">  Incl. 19% VAT</span>
+                        </p>
+                        {/* <p className="text-sm text-green-600">Free for you!</p> */}
                       </div>
                     )}
                   </div>
                 </div>
 
-                {appliedPromo && (
+                {!appliedPromo && (
                   <p className="text-sm text-gray-600 mb-4">
                     Student Ticket Access On Day 3 Only
                   </p>
                 )}
               </div>
 
-              {/* Promo Code Section */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Have a promo code?
@@ -274,7 +186,7 @@ const ApplyingPromoCode = () => {
                       </button>
                     </div>
                     <div className="bg-green-50 border border-green-200 rounded p-3">
-                      <p className="text-green-700 text-sm font-medium">
+                      <p className="text-green-600 text-sm font-medium">
                         {appliedPromo.description}
                       </p>
                       <div className="flex justify-between items-center mt-2">
@@ -288,13 +200,13 @@ const ApplyingPromoCode = () => {
                           <p className="text-sm text-gray-600 font-medium">
                             Promo code applied:{" "}
                             <span className="font-medium text-green-600">
-                              EUR 10.00 (inc. VAT)
+                            15% (EUR 0.06 incl. VAT)
                             </span>
                           </p>
                           <p className="text-sm text-gray-600 font-medium">
                             Applied to: 
                             <span className="font-medium text-green-600">
-                            2 festival ground tickets
+                            2 lowest-priced tickets
                             </span>
                           </p>
                         </div>
@@ -310,7 +222,6 @@ const ApplyingPromoCode = () => {
                 )}
               </div>
 
-              {/* Total Section */}
               {appliedPromo && (
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-semibold text-lg">
@@ -333,11 +244,11 @@ const ApplyingPromoCode = () => {
                   <span className="font-semibold text-lg">
                     Total:{" "}
                     {appliedPromo && (
-                      <span className="text-gray-400 line-through text-m">
-                        {originalPrice}&nbsp;
+                      <span className="text-gray-400 line-through text-m mr-2">
+                        EUR {originalPrice}&nbsp;
                       </span>
                     )}
-                    EUR {calculateTotal().toFixed(2)}
+                     EUR {calculateTotal().toFixed(2)}
                   </span>
                   {appliedPromo && (
                     <div className="text-right">
@@ -350,14 +261,13 @@ const ApplyingPromoCode = () => {
                     </div>
                   )}
                 </div>
-                {appliedPromo && (
+                {/* {appliedPromo && (
                   <p className="text-right text-green-600 font-medium">
                     You save!
                   </p>
-                )}
+                )} */}
               </div>
 
-              {/* Terms and Conditions */}
               <div className="space-y-4 mb-6">
                 <div className="flex items-start space-x-3">
                   <input
@@ -428,17 +338,11 @@ const ApplyingPromoCode = () => {
                     )}
               </div>
 
-              {/* Action Buttons */}
-              {/* {!appliedPromo && ( */}
               <div className="flex justify-center space-x-4">
                 <button
                   className="bg-[linear-gradient(90deg,_#5C2F66_0%,_#25102C_100%)] text-white px-6 py-2 rounded font-medium transition-colors"
                   onClick={() => {
                     setCurrentStep(currentStep - 1);
-                    // if (currentStep < 4 || currentStep === 4) {
-                    //   setCurrentStep(currentStep - 1);
-                    //   navigate('/register-form')
-                    // }
                     navigate("/register-form");
                     window.scrollTo(0,0);
                   }}
@@ -453,13 +357,11 @@ const ApplyingPromoCode = () => {
                   NEXT
                 </button>
               </div>
-              {/* )} */}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Green Pixelated Section */}
       <div
         className="bg-gradient-to-r from-lime-400 to-green-500 bg-cover bg-center bg-no-repeat relative py-14"
         style={{

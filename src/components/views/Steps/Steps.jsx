@@ -1,6 +1,6 @@
-import React from 'react'
-import { ChevronDown, User, Check } from "lucide-react";
-import {useProgressBarContext} from '../../context/ProgressBarContext'
+import { Check } from "lucide-react";
+import React from 'react';
+import { useProgressBarContext } from '../../context/ProgressBarContext';
 
 function Steps() {
     const {
