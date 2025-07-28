@@ -15,17 +15,25 @@ const ApplyingPromoCode = () => {
   const [agreedToDataUse, setAgreedToDataUse] = useState(false);
   const [showTermsError, setShowTermsError] = useState(false);
   const [showDataUseError, setShowDataUseError] = useState(false);
-  const originalPrice = 60.99;
-  const premiumTicketPrice = 50.0;
-  const { currentStep, setCurrentStep, steps,totalBuyPrice } = useProgressBarContext();
+  
+  const { currentStep, setCurrentStep, steps, totalBuyPrice, totalQuantity } = useProgressBarContext();
+  console.log(totalBuyPrice,'totalBuyPrice')
+  console.log(totalQuantity,'totalQuantity')
+  const originalPrice = totalBuyPrice || 60.99; 
+  const quantity = totalQuantity || 2; 
+  
   const handleApplyPromo = () => {
     if (promoCode.trim()) {
+      const discountPercentage = 15; 
+      const discountAmount = (originalPrice * discountPercentage) / 100;
+      
       setAppliedPromo({
         code: promoCode,
-        description: `Promo code '${promoCode}' applied successfully! Applied to 2 lowest-priced tickets!`,
-        discount: 10.0,
-        ticketDiscount: "15% (EUR 0.06 incl. VAT)",
-        savings: "EUR 10.00 - You save 10.00!",
+        description: `Promo code '${promoCode}' applied successfully! Applied to ${quantity} lowest-priced tickets!`,
+        discount: discountAmount,
+        discountPercentage: discountPercentage,
+        ticketDiscount: `${discountPercentage}% (EUR ${discountAmount.toFixed(2)} incl. VAT)`,
+        savings: `EUR ${discountAmount.toFixed(2)} - You save ${discountAmount.toFixed(2)}!`,
       });
     }
   };
@@ -40,9 +48,17 @@ const ApplyingPromoCode = () => {
     if (appliedPromo) {
       total -= appliedPromo.discount;
     }
-    return total;
+    return Math.max(0, total);
   };
-  const handleNext=()=>{
+
+  const calculateDiscountedPrice = () => {
+    if (appliedPromo) {
+      return originalPrice - appliedPromo.discount;
+    }
+    return originalPrice;
+  };
+
+  const handleNext = () => {
     setShowTermsError(false);
     setShowDataUseError(false);
 
@@ -65,9 +81,8 @@ const ApplyingPromoCode = () => {
         navigate("/success");
       }
     }
-  
-    
-  }
+  };
+
   const handleTermsChange = (e) => {
     setAgreedToTerms(e.target.checked);
     if (e.target.checked) {
@@ -81,12 +96,13 @@ const ApplyingPromoCode = () => {
       setShowDataUseError(false);
     }
   };
-  React.useEffect(()=>{
-    if(agreedToTerms && agreedToDataUse){
+
+  React.useEffect(() => {
+    if (agreedToTerms && agreedToDataUse) {
       setCurrentStep(currentStep + 1);
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     }
-  },[agreedToTerms , agreedToDataUse])
+  }, [agreedToTerms, agreedToDataUse]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -110,11 +126,11 @@ const ApplyingPromoCode = () => {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-b-lg p-6">
-              <div className={`${appliedPromo?'bg-green-50 border-l-4 border-green-500':''} mb-6`}>
+              <div className={`${appliedPromo ? 'bg-green-50 border-l-4 border-green-500' : ''} mb-6`}>
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="font-semibold text-gray-800 ml-2">
-                      PREMIUM TICKET x 2
+                      PREMIUM TICKET x {quantity}
                     </h3>
                     {!appliedPromo && (
                       <p className="text-sm text-gray-600 ml-2">
@@ -124,28 +140,23 @@ const ApplyingPromoCode = () => {
                   </div>
                   <div className="text-right">
                     {!appliedPromo ? (
-                      <p className="font-semibold">EUR 60.99</p>
+                      <p className="font-semibold">EUR {originalPrice.toFixed(2)}</p>
                     ) : (
                       <div>
                         <p className="text-[#898787] font-semibold line-through">
-                        FREE 0.16
+                          EUR {originalPrice.toFixed(2)}
                         </p>
-                        
                         <p className="text-green-600 font-semibold">
-                        FREE 0.16 <span className="text-sm text-white w-20 h-3 bg-green-700 rounded p-1 ">-15%</span>
-                         <span className="text-[#898787] font-semibold ">  Incl. 19% VAT</span>
+                          EUR {calculateDiscountedPrice().toFixed(2)}{" "}
+                          <span className="text-sm text-white w-20 h-3 bg-green-700 rounded p-1 ">
+                            -{appliedPromo.discountPercentage}%
+                          </span>
+                          <span className="text-[#898787] font-semibold "> Incl. 19% VAT</span>
                         </p>
-                        {/* <p className="text-sm text-green-600">Free for you!</p> */}
                       </div>
                     )}
                   </div>
                 </div>
-
-                {/* {!appliedPromo && (
-                  <p className="text-sm text-gray-600 mb-4">
-                    Student Ticket Access On Day 3 Only
-                  </p>
-                )} */}
               </div>
 
               <div className="mb-6">
@@ -198,15 +209,15 @@ const ApplyingPromoCode = () => {
                             </span>
                           </p>
                           <p className="text-sm text-gray-600 font-medium">
-                            Promo code applied:{" "}
+                            Discount:{" "}
                             <span className="font-medium text-green-600">
-                            15% (EUR 0.06 incl. VAT)
+                              {appliedPromo.ticketDiscount}
                             </span>
                           </p>
                           <p className="text-sm text-gray-600 font-medium">
-                            Applied to: 
+                            Applied to:{" "}
                             <span className="font-medium text-green-600">
-                            2 lowest-priced tickets
+                              {quantity} lowest-priced tickets
                             </span>
                           </p>
                         </div>
@@ -227,28 +238,22 @@ const ApplyingPromoCode = () => {
                   <span className="font-semibold text-lg">
                     Student Ticket Access On Day 3 Only{" "}
                   </span>
-
                   <span className="font-semibold text-lg">
-                    EUR 50 40 SUBJECT TO APPROVAL Incl. 19%{" "}
+                    EUR {calculateDiscountedPrice().toFixed(2)} SUBJECT TO APPROVAL Incl. 19%{" "}
                   </span>
                 </div>
               )}
+
               <div className="border-t pt-4 mb-6">
-                <div
-                  className={
-                    !appliedPromo
-                      ? "text-right"
-                      : "flex justify-between items-center mb-2"
-                  }
-                >
+                <div className={!appliedPromo ? "text-right" : "flex justify-between items-center mb-2"}>
                   <span className="font-semibold text-lg">
                     Total:{" "}
                     {appliedPromo && (
                       <span className="text-gray-400 line-through text-m mr-2">
-                        EUR {originalPrice}&nbsp;
+                        EUR {originalPrice.toFixed(2)}&nbsp;
                       </span>
                     )}
-                     EUR {calculateTotal().toFixed(2)}
+                    EUR {calculateTotal().toFixed(2)}
                   </span>
                   {appliedPromo && (
                     <div className="text-right">
@@ -261,11 +266,11 @@ const ApplyingPromoCode = () => {
                     </div>
                   )}
                 </div>
-                {/* {appliedPromo && (
+                {appliedPromo && (
                   <p className="text-right text-green-600 font-medium">
-                    You save!
+                    You save EUR {appliedPromo.discount.toFixed(2)}!
                   </p>
-                )} */}
+                )}
               </div>
 
               <div className="space-y-4 mb-6">
@@ -298,7 +303,7 @@ const ApplyingPromoCode = () => {
                       className="text-red-600 underline cursor-pointer"
                     >
                       Privacy Policy
-                      </a>
+                    </a>
                     , and consent that attendees under the age of 21 will not be
                     admitted, and admission to the exhibition is restricted to
                     trade and business professionals only, and students above 18
@@ -307,11 +312,11 @@ const ApplyingPromoCode = () => {
                   </label>
                 </div>
                 {showTermsError && (
-                      <div className="flex items-center text-red">
-                        <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0 text-red-500" />
-                        <span className="text-red-500">Please accept the terms and conditions to continue.</span>
-                      </div>
-                    )}
+                  <div className="flex items-center text-red">
+                    <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0 text-red-500" />
+                    <span className="text-red-500">Please accept the terms and conditions to continue.</span>
+                  </div>
+                )}
                 <div className="flex items-start space-x-3">
                   <input
                     type="checkbox"
@@ -331,27 +336,26 @@ const ApplyingPromoCode = () => {
                   </label>
                 </div>
                 {showDataUseError && (
-                      <div className="flex items-center text-red">
-                        <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0 text-red-500" />
-                        <span className="text-red-500">Please consent to data use to continue.</span>
-                      </div>
-                    )}
+                  <div className="flex items-center text-red">
+                    <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0 text-red-500" />
+                    <span className="text-red-500">Please consent to data use to continue.</span>
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-center space-x-4">
                 <button
                   className="bg-[linear-gradient(90deg,_#5C2F66_0%,_#25102C_100%)] text-white px-6 py-2 rounded font-medium transition-colors"
                   onClick={() => {
-                    setCurrentStep(currentStep - 1);
+                    setCurrentStep(2);
                     navigate("/register-form");
-                    window.scrollTo(0,0);
+                    window.scrollTo(0, 0);
                   }}
                 >
                   PREVIOUS
                 </button>
                 <button
                   className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  // disabled={!agreedToTerms || !agreedToDataUse}
                   onClick={handleNext}
                 >
                   NEXT

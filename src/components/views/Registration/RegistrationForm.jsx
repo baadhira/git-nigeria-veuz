@@ -390,6 +390,7 @@ export default function RegistrationForm() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-green-100 to-green-50 relative">
+      {console.log(currentStep,'currentStep in reg from')}
       {console.log(errors, "errorserrors")}
       <div
         className="bg-gradient-to-r from-lime-400 to-green-500 p-14 flex justify-between items-center flex-shrink-0 bg-cover bg-center bg-no-repeat relative"

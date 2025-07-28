@@ -341,7 +341,7 @@ const useTicketManager = (ticketData) => {
   const { totalBuyPrice,setTotalBuyPrice ,totalQuantity,setTotalQuantity,setTotalProduct} = useProgressBarContext();
 
   const totalProduct = useMemo(() => {
-    setTotalBuyPrice(Object.values(tickets).reduce((sum, qty) => sum + qty, 0))
+    // setTotalBuyPrice(Object.values(tickets).reduce((sum, qty) => sum + qty, 0))
     return Object.values(tickets).reduce((sum, qty) => sum + qty, 0);
   }, [tickets]);
 
@@ -362,7 +362,8 @@ const useTicketManager = (ticketData) => {
     calculateTotal,
     totalProduct,
     getTicketSummary,
-    setTotalQuantity
+    setTotalQuantity,
+    setTotalBuyPrice
   };
 };
 
@@ -469,7 +470,8 @@ const GitexTicketSelection = () => {
     calculateTotal,
     totalProduct,
     getTicketSummary,
-    setTotalQuantity
+    setTotalQuantity,
+    setTotalBuyPrice
   } = useTicketManager(ticketData);
 
   const handleBuyNow = useCallback(() => {
@@ -477,6 +479,7 @@ const GitexTicketSelection = () => {
     console.log(selectedTickets,'selectedTicketsselectedTickets')
     console.log(totalProduct,'totalProduct')
     setTotalQuantity(totalProduct)
+    setTotalBuyPrice(calculateTotal)
     // localStorage.setItem('selectedTickets', JSON.stringify({
     //   tickets: selectedTickets,
     //   total: calculateTotal,
