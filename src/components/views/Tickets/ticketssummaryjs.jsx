@@ -1,12 +1,22 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import gitexLogo from "../../assets/images/card-gitex-icon.png";
-import cardOne from "../../assets/images/card1.png";
-import cardTwo from "../../assets/images/card2.jpg";
-import cardThree from "../../assets/images/card3.jpg";
-import cardFour from "../../assets/images/card4.jpg";
-import headerBg from "../../assets/images/header.png";
-import { useProgressBarContext } from "../../context/ProgressBarContext";
+
+// Mock images for demo
+const gitexLogo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='40' viewBox='0 0 100 40'%3E%3Crect width='100' height='40' fill='%23333'/%3E%3Ctext x='50' y='25' text-anchor='middle' fill='white' font-family='Arial' font-size='12'%3EGITEX%3C/text%3E%3C/svg%3E";
+const cardOne = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23667eea'/%3E%3C/svg%3E";
+const cardTwo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23f093fb'/%3E%3C/svg%3E";
+const cardThree = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%2343e97b'/%3E%3C/svg%3E";
+const cardFour = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23fa709a'/%3E%3C/svg%3E";
+const headerBg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='200' viewBox='0 0 1200 200'%3E%3Crect width='1200' height='200' fill='%2384fab0'/%3E%3C/svg%3E";
+
+// Mock context
+const useProgressBarContext = () => ({
+  totalBuyPrice: 0,
+  setTotalBuyPrice: () => {},
+  totalQuantity: 0,
+  setTotalQuantity: () => {},
+  setTotalProduct: () => {}
+});
 
 const useTicketQuantity = (initialQuantity = 0) => {
   const [quantity, setQuantity] = useState(initialQuantity);
@@ -305,6 +315,53 @@ const TicketCard = ({
   );
 };
 
+// New component for ticket summary
+const TicketSummary = ({ purchasedTickets }) => {
+  if (purchasedTickets.length === 0) {
+    return (
+      <div className="bg-white bg-opacity-10 rounded-lg p-4 mb-4">
+        <h4 className="text-sm font-bold text-white mb-2">Your Cart</h4>
+        <p className="text-xs text-gray-300">No tickets selected</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white bg-opacity-10 rounded-lg p-4 mb-4">
+      <h4 className="text-sm font-bold text-white mb-3">Your Cart ({purchasedTickets.length} item{purchasedTickets.length > 1 ? 's' : ''})</h4>
+      <div className="space-y-3">
+        {purchasedTickets.map((ticket) => (
+          <div key={ticket.id} className="bg-white bg-opacity-5 rounded-md p-3">
+            <div className="flex justify-between items-start mb-2">
+              <div className="flex-1 pr-2">
+                <h5 className="text-xs font-semibold text-white leading-tight">{ticket.title}</h5>
+                {ticket.badgeValue && (
+                  <span className="inline-block text-[10px] bg-green-500 text-white px-2 py-0.5 rounded-full mt-1">
+                    {ticket.badgeValue}
+                  </span>
+                )}
+              </div>
+              <div className="text-right">
+                <div className="text-xs text-gray-300">Qty: {ticket.quantity}</div>
+                <div className="text-sm font-bold text-white">
+                  {ticket.isFree ? 'FREE' : `EUR ${ticket.subtotal.toFixed(2)}`}
+                </div>
+              </div>
+            </div>
+            
+            {/* Individual ticket price breakdown */}
+            {!ticket.isFree && (
+              <div className="text-[10px] text-gray-400 border-t border-white border-opacity-10 pt-1">
+                EUR {ticket.price} × {ticket.quantity} = EUR {ticket.subtotal.toFixed(2)}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const useTicketManager = (ticketData) => {
   const [tickets, setTickets] = useState(() => {
     const initialState = {};
@@ -338,10 +395,10 @@ const useTicketManager = (ticketData) => {
       return total + (quantity * price);
     }, 0);
   }, [tickets, ticketData]);
+  
   const { totalBuyPrice,setTotalBuyPrice ,totalQuantity,setTotalQuantity,setTotalProduct} = useProgressBarContext();
 
   const totalProduct = useMemo(() => {
-    // setTotalBuyPrice(Object.values(tickets).reduce((sum, qty) => sum + qty, 0))
     return Object.values(tickets).reduce((sum, qty) => sum + qty, 0);
   }, [tickets]);
 
@@ -368,7 +425,7 @@ const useTicketManager = (ticketData) => {
 };
 
 const GitexTicketSelection = () => {
-  const navigate = useNavigate();
+  const navigate = () => {}; // Mock navigate
 
   const ticketData = [
     {
@@ -480,15 +537,10 @@ const GitexTicketSelection = () => {
     console.log(totalProduct,'totalProduct')
     setTotalQuantity(totalProduct)
     setTotalBuyPrice(calculateTotal)
-    // localStorage.setItem('selectedTickets', JSON.stringify({
-    //   tickets: selectedTickets,
-    //   total: calculateTotal,
-    //   totalProduct: totalProduct
-    // }));
     
     window.scrollTo(0, 0);
-    navigate("/register-form");
-  }, [getTicketSummary, calculateTotal, totalProduct, navigate]);
+    // navigate("/register-form");
+  }, [getTicketSummary, calculateTotal, totalProduct]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -518,6 +570,13 @@ const GitexTicketSelection = () => {
       
       <div className="bg-[linear-gradient(90deg,_#299D3F_0%,_#123F22_100%)] relative overflow-hidden">
         <div className="relative z-10 px-4 sm:px-6 py-4 sm:py-6 text-white">
+          
+          {/* Mobile Ticket Summary */}
+          <div className="block sm:hidden mb-4">
+            <TicketSummary purchasedTickets={getTicketSummary} />
+          </div>
+
+          {/* Mobile Layout */}
           <div className="block sm:hidden">
             <div className="text-center mb-4">
               <div className="text-sm opacity-90">
@@ -564,50 +623,62 @@ const GitexTicketSelection = () => {
             </div>
           </div>
 
-          <div className="hidden sm:flex justify-end">
-            <div className="flex items-center gap-4">
-              <div>
-                <div className="text-sm opacity-90">
-                  Total:
-                  <span className="text-2xl font-bold ml-2">
-                    EUR {calculateTotal.toFixed(2)}
-                  </span>
-                  <span className="text-xl font-normal ml-1">incl. 19% VAT</span>
-                </div>
-                <div className="text-xs opacity-70 cursor-pointer hover:opacity-100 transition-opacity">
-                  View Ticket Summary
-                  {totalProduct > 0 && (
-                    <span className="ml-2">({totalProduct} items)</span>
-                  )}
-                </div>
+          {/* Desktop Layout */}
+          <div className="hidden sm:block">
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6">
+              
+              {/* Desktop Ticket Summary */}
+              <div className="lg:flex-1 lg:max-w-md">
+                <TicketSummary purchasedTickets={getTicketSummary} />
               </div>
 
-              <div className="flex gap-2">
-                {totalProduct > 0 && (
-                  <button
-                    onClick={resetAll}
-                    className="bg-red-500 text-white px-4 py-3 rounded-lg font-bold hover:bg-red-600 transition-colors whitespace-nowrap"
-                  >
-                    Clear All
-                  </button>
-                )}
-                
-                <button
-                  onClick={handleBuyNow}
-                  disabled={totalProduct === 0}
-                  className={`px-6 py-3 rounded-lg font-bold transition-colors flex items-center gap-2 whitespace-nowrap ${
-                    totalProduct === 0
-                      ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                      : 'bg-white text-green-800 hover:bg-gray-100'
-                  }`}
-                >
-                  Buy Now
-                  {totalProduct > 0 && (
-                    <span className="bg-green-700 text-white text-xs px-2 py-1 rounded-full">
-                      {totalProduct}
-                    </span>
-                  )}
-                </button>
+              {/* Total and Buttons Section */}
+              <div className="lg:flex-shrink-0">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <div>
+                    <div className="text-sm opacity-90">
+                      Total:
+                      <span className="text-2xl font-bold ml-2">
+                        EUR {calculateTotal.toFixed(2)}
+                      </span>
+                      <span className="text-xl font-normal ml-1">incl. 19% VAT</span>
+                    </div>
+                    <div className="text-xs opacity-70 cursor-pointer hover:opacity-100 transition-opacity">
+                      View Ticket Summary
+                      {totalProduct > 0 && (
+                        <span className="ml-2">({totalProduct} items)</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    {totalProduct > 0 && (
+                      <button
+                        onClick={resetAll}
+                        className="bg-red-500 text-white px-4 py-3 rounded-lg font-bold hover:bg-red-600 transition-colors whitespace-nowrap"
+                      >
+                        Clear All
+                      </button>
+                    )}
+                    
+                    <button
+                      onClick={handleBuyNow}
+                      disabled={totalProduct === 0}
+                      className={`px-6 py-3 rounded-lg font-bold transition-colors flex items-center gap-2 whitespace-nowrap ${
+                        totalProduct === 0
+                          ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                          : 'bg-white text-green-800 hover:bg-gray-100'
+                      }`}
+                    >
+                      Buy Now
+                      {totalProduct > 0 && (
+                        <span className="bg-green-700 text-white text-xs px-2 py-1 rounded-full">
+                          {totalProduct}
+                        </span>
+                      )}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
