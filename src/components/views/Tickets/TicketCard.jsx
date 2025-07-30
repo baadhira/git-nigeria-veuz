@@ -380,12 +380,29 @@ const useTicketManager = (ticketData) => {
       return reset
     })
   }, [])
+  let VAT=10;
   const calculateTotal = useMemo(() => {
-    let VAT=10;
+    
     return ticketData.reduce((total, ticket) => {
       const quantity = tickets[ticket.id] || 0
       const price = parseFloat(ticket.price) || 0
       return total + quantity * price + VAT*quantity
+    }, 0)
+  }, [tickets, ticketData])
+  const calculateVAT = useMemo(() => {
+    
+    return ticketData.reduce((total, ticket) => {
+      const quantity = tickets[ticket.id] || 0
+      const price = parseFloat(ticket.price) || 0
+      return total+VAT*quantity
+    }, 0)
+  }, [tickets, ticketData])
+  const subTotal = useMemo(() => {
+    
+    return ticketData.reduce((total, ticket) => {
+      const quantity = tickets[ticket.id] || 0
+      const price = parseFloat(ticket.price) || 0
+      return total + quantity * price
     }, 0)
   }, [tickets, ticketData])
   const {
@@ -412,6 +429,8 @@ const useTicketManager = (ticketData) => {
     updateQuantity,
     resetAll,
     calculateTotal,
+    subTotal,
+    calculateVAT,
     totalProduct,
     getTicketSummary,
     setTotalQuantity,
@@ -517,6 +536,8 @@ const GitexTicketSelection = () => {
     updateQuantity,
     resetAll,
     calculateTotal,
+    subTotal,
+    calculateVAT,
     totalProduct,
     getTicketSummary,
     setTotalQuantity,
@@ -542,6 +563,7 @@ const GitexTicketSelection = () => {
   const toggleSummary = () => {
     setShowSummary(!showSummary)
   }
+  let VAT=10;
   return (
     <div className="min-h-screen flex flex-col">
       <div
@@ -681,11 +703,12 @@ const GitexTicketSelection = () => {
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between text-gray-300">
                       <span>Subtotal</span>
-                      <span>EUR {calculateTotal.toFixed(2)}</span>
+                      <span>EUR {subTotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-gray-300">
-                      <span>VAT (19%)</span>
-                      <span>Included</span>
+                      <span>VAT (19%) <span>Included</span></span>
+                      <span>EUR {calculateVAT.toFixed(2)}</span>
+ 
                     </div>
                     <div className="border-t border-white border-opacity-10 pt-3 flex justify-between font-bold text-white">
                       <span>Total</span>
