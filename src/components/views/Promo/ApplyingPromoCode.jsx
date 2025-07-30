@@ -19,8 +19,8 @@ const ApplyingPromoCode = () => {
   const { currentStep, setCurrentStep, steps, totalBuyPrice, totalQuantity } = useProgressBarContext();
   console.log(totalBuyPrice,'totalBuyPrice')
   console.log(totalQuantity,'totalQuantity')
-  const originalPrice = totalBuyPrice || 60.99; 
-  const quantity = totalQuantity || 2; 
+  const originalPrice = totalBuyPrice || 0; 
+  const quantity = totalQuantity || 0; 
   
   const handleApplyPromo = () => {
     if (promoCode.trim()) {
