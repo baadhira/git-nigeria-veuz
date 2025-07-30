@@ -598,13 +598,25 @@ const GitexTicketSelection = () => {
           </div>
           <div className="block sm:hidden">
             <div className="text-center mb-4">
+            <div className="text-sm opacity-90">
+                Subtotal:
+                <span className="text-m font-bold ml-2">
+                  EUR {subTotal.toFixed(2)}
+                </span>
+              </div>
+              <div className="text-sm opacity-90">
+                VAT:
+                <span className="text-m font-bold ml-2">
+                  EUR {calculateVAT.toFixed(2)}
+                </span>
+              </div>
               <div className="text-sm opacity-90">
                 Total:
-                <span className="text-xl font-bold ml-2">
+                <span className="text-m font-bold ml-2">
                   EUR {calculateTotal.toFixed(2)}
                 </span>
               </div>
-              <div className="text-lg font-normal">incl. 19% VAT</div>
+              <div className="text-m font-normal">incl. 19% VAT</div>
               <div className="text-xs opacity-70 cursor-pointer hover:opacity-100 transition-opacity mt-1">
                 View Ticket Summary
                 {totalProduct > 0 && (
